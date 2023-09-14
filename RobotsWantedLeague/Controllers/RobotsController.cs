@@ -1,21 +1,25 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
+using RobotsWantedLeague.Services;
 
 namespace RobotsWantedLeague.Controllers;
 
-public class HomeController : Controller
+public class RobotsController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<RobotsController> _logger;
+    private readonly IRobotsService robotsService;
 
-    public HomeController(ILogger<HomeController> logger)
+    public RobotsController(ILogger<RobotsController> logger,
+                            IRobotsService robotsService)
     {
         _logger = logger;
+        this.robotsService = robotsService;
     }
 
     public IActionResult Index()
     {
-        return View();
+        return View(robotsService.Robots);
     }
 
     public IActionResult Privacy()

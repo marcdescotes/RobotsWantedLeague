@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<Robot>
+
+
+<ul class="list-group">
+  @foreach (Robot robot in Model){
+    <li class="list-group-item">
+        <a href="robots/robot?id=@robot.Id">@robot.Name</a>
+    </li>
+  }
+</ul>
