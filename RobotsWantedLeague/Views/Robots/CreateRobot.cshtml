@@ -1,0 +1,43 @@
+
+<form hx-post="/robots/createRobot"
+       hx-ext="json-enc"
+       hx-trigger="submit">
+  <div class="form-group">
+    <label for="name">Le nom du robot</label>
+    <input type="text" 
+           class="form-control" 
+           id="name" 
+           name="name"
+           placeholder="Le Géant Ferré">
+  </div>
+  <div class="form-group">
+    <label for="weight">Poids (kg)</label>
+    <input type="number" 
+           class="form-control" 
+           id="weight"
+           name="weight"
+           min="0"
+           placeholder="87">
+  </div>
+
+  <div class="form-group">
+    <label for="height">Taille (m)</label>
+    <input type="number" 
+           class="form-control" 
+           id="height"
+           name="height"
+           min="0"
+           placeholder="2">
+  </div>
+
+  <div class="form-group">
+    <label for="country">Pays</label>
+    <input type="text" 
+           class="form-control" 
+           id="country" 
+           name="country"
+           placeholder="Suriname">
+  </div>
+
+  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>

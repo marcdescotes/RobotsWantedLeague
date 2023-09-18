@@ -5,6 +5,14 @@ using RobotsWantedLeague.Services;
 
 namespace RobotsWantedLeague.Controllers;
 
+public class RobotRequest{
+    public string Name { get; set; }
+    public int Height { get; set; }
+    public int Weight { get; set; }
+    
+    public string Country { get; set; }
+}
+
 public class RobotsController : Controller
 {
     private readonly ILogger<RobotsController> _logger;
@@ -22,14 +30,26 @@ public class RobotsController : Controller
         return View(robotsService.Robots);
     }
 
-    public IActionResult Privacy()
-    {
+    public IActionResult Robot(int id){
+        Robot robot = robotsService.GetRobotById(id);
+        return View(robot);
+    }
+
+    [HttpGet]
+    public IActionResult CreateRobot(){
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    [HttpPost]
+    public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        Robot r = robotsService.CreateRobot(robot.Name, 
+                                            robot.Weight, 
+                                            robot.Height, 
+                                            robot.Country);
+        string htmxRedirectHeaderName = "HX-Redirect";
+        string redirectURL = "/robots/robot?id=" + r.Id;
+        Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
+        return Ok();
     }
 }

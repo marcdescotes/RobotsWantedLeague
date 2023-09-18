@@ -7,12 +7,65 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/RobotsWantedLeague.styles.css" asp-append-version="true" />
+    <script src="https://unpkg.com/htmx.org@1.9.5"`
+        integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" 
+        crossorigin="anonymous"></script>
+    <script>
+        (function () {
+  function _isNumeric(str) {
+    if (typeof str != "string") {
+      return false
+    }
+    return !isNaN(str) && !isNaN(parseFloat(str));
+  }
+
+  function _cast(str) {
+    return _isNumeric(str) ? parseFloat(str) : str;
+  }
+
+  function _addAssocToDict(obj, key, value) {
+    let splittedKey = Array.isArray(key) ? key : key.split(".");
+    const keyToAdd = splittedKey.shift();
+    const isTerminal = splittedKey.length === 0;
+    if (isTerminal) {
+      obj[keyToAdd] = _cast(value);
+      return obj;
+    }
+    if (!(keyToAdd in obj)) {
+      obj[keyToAdd] = {};
+    }
+    return _addAssocToDict(obj[keyToAdd], splittedKey, value);
+  }
+
+  function _createPayload(params) {
+    let ret = {};
+    for (let key of Object.keys(params)) {
+      _addAssocToDict(ret, key, params[key]);
+    }
+    return ret;
+  }
+
+  htmx.defineExtension('json-enc', {
+    onEvent: function (name, evt) {
+      if (name === "htmx:configRequest") {
+        evt.detail.headers['Content-Type'] = "application/json";
+      }
+    },
+
+    encodeParameters: function (xhr, parameters, elt) {
+      xhr.overrideMimeType('text/json');
+      return (JSON.stringify(_createPayload(parameters)));
+    }
+  });
+})();
+    </script>
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RobotsWantedLeague</a>
+                <a class="navbar-brand" href="/">RobotsWantedLeague</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

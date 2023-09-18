@@ -1,0 +1,29 @@
+@model Robot
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width: 10rem;">
+            <img class="card-img-top" 
+            src="https://robohash.org/aligator@Model.Id?set=set2">
+        </div>
+    </div>
+</div>
+
+
+<table class="table">
+    <tr>
+        <th>Nom</th><td>@Model.Name</td>
+    </tr>
+
+    <tr>
+        <th>Poids</th><td>@Model.Weight (kg)</td>
+    </tr>
+
+    <tr>
+        <th>Taille</th><td>@Model.Height (m)</td>
+    </tr>
+    <tr>
+        <th>Pays</th><td>@Model.Country</td>
+    </tr>
+
+</table>
