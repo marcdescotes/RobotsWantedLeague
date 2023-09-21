@@ -1,20 +1,31 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+  ViewData["Title"] = "Home Page";
 }
 @model List<Robot>
+
+<form hx-post="/robots/FilterRobots" hx-ext="json-enc" hx-trigger="submit"
+  style="width: 40%; margin-left: auto; margin-right: auto;">
+
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="Pays ou continent" name="filter">
+    <div class="input-group-append">
+      <button class="btn btn-primary" type="submit">Button</button>
+    </div>
+  </div>
+</form>
 
 <h1 style="text-align: center;">LISTE DES ROBOTS RECHERCHÉS</h1>
 
 <div style="margin-bottom: 20px; margin-top: 8%;">
-<ul class="list-group" style="width: 20%; margin-left: auto; margin-right: auto; text-align: center;">
-  @foreach (Robot robot in Model){
-    <li class="list-group-item">
+  <ul class="list-group" style="width: 20%; margin-left: auto; margin-right: auto; text-align: center;">
+    @foreach (Robot robot in Model)
+    {
+      <li class="list-group-item">
         <a href="robots/robot?id=@robot.Id">@robot.Name</a>
-    </li>
-  }
-</ul>
+      </li>
+    }
+  </ul>
 </div>
-
 <div class="text-center">
-<a class="btn btn-primary mt-2" href="/robots/createRobot">Ajouter un robot</a>
+  <a class="btn btn-primary mt-2" href="/robots/createRobot">Ajouter un robot</a>
 </div>

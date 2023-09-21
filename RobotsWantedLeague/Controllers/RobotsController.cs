@@ -12,8 +12,12 @@ public class RobotRequest
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
-
 }
+
+public class SearchRobotRequest{
+    public string Filter{get; set;}
+}
+
 
 public class RobotsController : Controller
 {
@@ -26,7 +30,6 @@ public class RobotsController : Controller
         _logger = logger;
         this.robotsService = robotsService;
     }
-
     public IActionResult Index()
     {
         return View(robotsService.Robots);
@@ -66,10 +69,24 @@ public class RobotsController : Controller
     }
 
     [HttpPost]
-    public IActionResult ChangeRobotCountry(int robotId, string newCountry)
+     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
         robotsService.ChangeRobotCountry(robotId, newCountry);
         return RedirectToAction("Robot", new { id = robotId });
+    }
+
+
+    [HttpPost]
+    public IActionResult FilterRobots([FromBody] SearchRobotRequest req)
+    {
+        var filteredRobots = robotsService.FilterRobots(req.Filter);
+        string htmxRedirectHeaderName = "HX-Redirect";
+        string redirectURL = "/robots";
+        Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
+        
+        return Ok();
+        // var filteredRobots = robotsService.FilterRobots(req.Filter);
+        // return View(filteredRobots);
     }
 
 }
