@@ -8,12 +8,42 @@ namespace RobotsWantedLeague.Controllers;
 
 public class RobotRequest
 {
+    // [AllowedCountry(ErrorMessage = "Le pays n'est pas autorisé.")]
+    // public string NewCountry { get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
 
+//     public static readonly List<string> AllowedCountries = new List<string>
+// {
+//     "Canada",
+//     "United States of America",
+//     "Mexico",
+    
+// };
+
 }
+
+// public class AllowedCountryAttribute : ValidationAttribute
+// {
+//     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+//     {
+//         string country = value as string;
+//         if (string.IsNullOrEmpty(country))
+//         {
+//             return ValidationResult.Success;
+//         }
+
+//         if (!CountryConstants.AllowedCountries.Contains(country, StringComparer.OrdinalIgnoreCase))
+//         {
+//             return new ValidationResult(ErrorMessage);
+//         }
+
+//         return ValidationResult.Success;
+//     }
+// }
+
 
 public class RobotsController : Controller
 {
@@ -51,10 +81,7 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(robot);
-        }
+
         Robot r = robotsService.CreateRobot(robot.Name,
                                             robot.Weight,
                                             robot.Height,
