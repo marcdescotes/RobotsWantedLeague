@@ -12,6 +12,16 @@
     </div>
 </div>
 
+@* <div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="card mb-3" style="width: 10rem;">
+            <iframe class="card-img-top" src="https://good-hawk-21.deno.dev/ljl"></iframe>
+        </div>
+    </div>
+</div> *@
+
+
+
 
 <table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
 
@@ -66,9 +76,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="newCountry">Entrez le nouveau pays :</label>
-                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Italie">
-                        @* à mettre dans input du haut :  data-val="true"
-                         <span asp-validation-for="NewCountry" class="text-danger"></span> *@
+                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Italie" data-val="true">
                     </div>
                 </div>
                 <div class="modal-footer">
