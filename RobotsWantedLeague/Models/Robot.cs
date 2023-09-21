@@ -7,7 +7,6 @@ public class Robot
     public int Weight { get; set; }
     public int Height { get; set; }
     public string Country { get; set; }
-    
     public string NewCountry { get; set; }
     public List<string> VisitedCountries { get; set; } = new List<string>();
     

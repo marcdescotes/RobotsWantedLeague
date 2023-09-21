@@ -8,18 +8,12 @@ namespace RobotsWantedLeague.Controllers;
 
 public class RobotRequest
 {
-
     public string Country { get; set; }
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
 
-
-
 }
-
-
-
 
 public class RobotsController : Controller
 {
