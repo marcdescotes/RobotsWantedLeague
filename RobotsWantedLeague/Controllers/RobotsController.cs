@@ -2,15 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace RobotsWantedLeague.Controllers;
 
-public class RobotRequest{
+public class RobotRequest
+{
+    public string Country { get; set; }
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
-    
-    public string Country { get; set; }
+
 }
 
 public class RobotsController : Controller
@@ -30,26 +32,44 @@ public class RobotsController : Controller
         return View(robotsService.Robots);
     }
 
-    public IActionResult Robot(int id){
-        Robot robot = robotsService.GetRobotById(id);
+    public IActionResult Robot(int id)
+    {
+        Robot? robot = robotsService.GetRobotById(id);
+        if (robot == null)
+        {
+            return NotFound();
+        }
         return View(robot);
     }
 
     [HttpGet]
-    public IActionResult CreateRobot(){
+    public IActionResult CreateRobot()
+    {
         return View();
     }
 
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-        Robot r = robotsService.CreateRobot(robot.Name, 
-                                            robot.Weight, 
-                                            robot.Height, 
+        if (!ModelState.IsValid)
+        {
+            return View(robot);
+        }
+        Robot r = robotsService.CreateRobot(robot.Name,
+                                            robot.Weight,
+                                            robot.Height,
                                             robot.Country);
         string htmxRedirectHeaderName = "HX-Redirect";
         string redirectURL = "/robots/robot?id=" + r.Id;
         Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
         return Ok();
     }
+
+    [HttpPost]
+    public IActionResult ChangeRobotCountry(int robotId, string newCountry)
+    {
+        robotsService.ChangeRobotCountry(robotId, newCountry);
+        return RedirectToAction("Robot", new { id = robotId });
+    }
+
 }

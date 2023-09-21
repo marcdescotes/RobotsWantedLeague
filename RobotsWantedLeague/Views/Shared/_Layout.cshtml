@@ -1,95 +1,104 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RobotsWantedLeague</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RobotsWantedLeague.styles.css" asp-append-version="true" />
-    <script src="https://unpkg.com/htmx.org@1.9.5"`
-        integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO" 
-        crossorigin="anonymous"></script>
-    <script>
-        (function () {
-  function _isNumeric(str) {
-    if (typeof str != "string") {
-      return false
-    }
-    return !isNaN(str) && !isNaN(parseFloat(str));
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>@ViewData["Title"] - RobotsWantedLeague</title>
+  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+  <link rel="stylesheet" href="~/RobotsWantedLeague.styles.css" asp-append-version="true" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 
-  function _cast(str) {
-    return _isNumeric(str) ? parseFloat(str) : str;
-  }
 
-  function _addAssocToDict(obj, key, value) {
-    let splittedKey = Array.isArray(key) ? key : key.split(".");
-    const keyToAdd = splittedKey.shift();
-    const isTerminal = splittedKey.length === 0;
-    if (isTerminal) {
-      obj[keyToAdd] = _cast(value);
-      return obj;
-    }
-    if (!(keyToAdd in obj)) {
-      obj[keyToAdd] = {};
-    }
-    return _addAssocToDict(obj[keyToAdd], splittedKey, value);
-  }
-
-  function _createPayload(params) {
-    let ret = {};
-    for (let key of Object.keys(params)) {
-      _addAssocToDict(ret, key, params[key]);
-    }
-    return ret;
-  }
-
-  htmx.defineExtension('json-enc', {
-    onEvent: function (name, evt) {
-      if (name === "htmx:configRequest") {
-        evt.detail.headers['Content-Type'] = "application/json";
+  <script src="https://unpkg.com/htmx.org@1.9.5" `
+    integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+    crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      function _isNumeric(str) {
+        if (typeof str != "string") {
+          return false
+        }
+        return !isNaN(str) && !isNaN(parseFloat(str));
       }
-    },
 
-    encodeParameters: function (xhr, parameters, elt) {
-      xhr.overrideMimeType('text/json');
-      return (JSON.stringify(_createPayload(parameters)));
-    }
-  });
-})();
-    </script>
+      function _cast(str) {
+        return _isNumeric(str) ? parseFloat(str) : str;
+      }
+
+      function _addAssocToDict(obj, key, value) {
+        let splittedKey = Array.isArray(key) ? key : key.split(".");
+        const keyToAdd = splittedKey.shift();
+        const isTerminal = splittedKey.length === 0;
+        if (isTerminal) {
+          obj[keyToAdd] = _cast(value);
+          return obj;
+        }
+        if (!(keyToAdd in obj)) {
+          obj[keyToAdd] = {};
+        }
+        return _addAssocToDict(obj[keyToAdd], splittedKey, value);
+      }
+
+      function _createPayload(params) {
+        let ret = {};
+        for (let key of Object.keys(params)) {
+          _addAssocToDict(ret, key, params[key]);
+        }
+        return ret;
+      }
+
+      htmx.defineExtension('json-enc', {
+        onEvent: function (name, evt) {
+          if (name === "htmx:configRequest") {
+            evt.detail.headers['Content-Type'] = "application/json";
+          }
+        },
+
+        encodeParameters: function (xhr, parameters, elt) {
+          xhr.overrideMimeType('text/json');
+          return (JSON.stringify(_createPayload(parameters)));
+        }
+      });
+    })();
+  </script>
 
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">RobotsWantedLeague</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - RobotsWantedLeague - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">RobotsWantedLeague</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+      </div>
+    </nav>
+  </header>
+  <div class="container">
+    <main role="main" class="pb-3">
+      @RenderBody()
+    </main>
+  </div>
+
+  <footer class="border-top footer text-muted">
+    <div class="container">
+      &copy; 2023 - RobotsWantedLeague
+    </div>
+  </footer>
+  <script src="~/lib/jquery/dist/jquery.min.js"></script>
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  @await RenderSectionAsync("Scripts", required: false)
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>

@@ -1,29 +1,78 @@
 @model Robot
 
+@{
+    string imageURL = "https://robohash.org/toaster" + Model.Id.ToString() + "?set=set2";
+}
+
 <div class="container">
     <div class="d-flex justify-content-center">
-        <div class="card" style="width: 10rem;">
-            <img class="card-img-top" 
-            src="https://robohash.org/aligator@Model.Id?set=set2">
+        <div class="card mb-3" style="width: 10rem;">
+            <img class="card-img-top" src="@imageURL">
         </div>
     </div>
 </div>
 
 
-<table class="table">
-    <tr>
-        <th>Nom</th><td>@Model.Name</td>
-    </tr>
+<table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
 
-    <tr>
-        <th>Poids</th><td>@Model.Weight (kg)</td>
-    </tr>
+    <thead class="thead-dark">
+    <tbody>
+        <tr>
+            <th>Nom</th>
+            <td>@Model.Name</td>
+        </tr>
 
-    <tr>
-        <th>Taille</th><td>@Model.Height (m)</td>
-    </tr>
-    <tr>
-        <th>Pays</th><td>@Model.Country</td>
-    </tr>
+        <tr>
+            <th>Poids</th>
+            <td>@Model.Weight (kg)</td>
+        </tr>
+
+        <tr>
+            <th>Taille</th>
+            <td>@Model.Height (m)</td>
+        </tr>
+        <tr>
+            <th>Pays</th>
+            <td>
+                <span>@Model.Country</span>
+                <button class="btn btn-primary ml-3" data-toggle="modal" data-target="#changeRobotCountryModal">
+                    Modifier
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <th>Pays visités</th>
+            <td>@string.Join(", ", Model.VisitedCountries)</td>
+        </tr>
+        </thead>
+    </tbody>
 
 </table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="changeRobotCountryModal" tabindex="-1" role="dialog"
+    aria-labelledby="changeRobotCountryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-action="ChangeRobotCountry" asp-route-robotId="@Model.Id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeRobotCountryModalLabel">Modification du pays</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newCountry">Entrez le nouveau pays :</label>
+                        <input type="text" class="form-control" name="newCountry" id="newCountry" placeholder="Italie">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

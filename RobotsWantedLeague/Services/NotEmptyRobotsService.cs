@@ -2,7 +2,7 @@ namespace RobotsWantedLeague.Services;
 
 using RobotsWantedLeague.Models;
 
-public class NotEmptyRobotsService: IRobotsService
+public class NotEmptyRobotsService : IRobotsService
 {
     private readonly IRobotsService underlyingRobotsService;
     public List<Robot> Robots { get => underlyingRobotsService.Robots; }
@@ -24,12 +24,19 @@ public class NotEmptyRobotsService: IRobotsService
     }
 
 
-    public Robot? GetRobotById(int id){
+    public Robot? GetRobotById(int id)
+    {
         return underlyingRobotsService.GetRobotById(id);
     }
 
-    public bool DeleteRobotById(int id){
+    public bool DeleteRobotById(int id)
+    {
         return underlyingRobotsService.DeleteRobotById(id);
+    }
+
+    public void ChangeRobotCountry(int robotId, string newCountry)
+    {
+        underlyingRobotsService.ChangeRobotCountry(robotId, newCountry);
     }
 
 }

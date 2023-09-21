@@ -56,4 +56,14 @@ public class RobotsService: IRobotsService
         return true;
     }
 
+    public void ChangeRobotCountry(int robotId, string newCountry)
+    {
+        Robot robot = GetRobotById(robotId);
+        if (robot != null)
+        {
+            robot.VisitedCountries.Add(robot.Country);
+            robot.Country = newCountry;
+        }
+    }
+
 }
