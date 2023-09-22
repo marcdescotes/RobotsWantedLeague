@@ -1,4 +1,5 @@
 @model Robot
+@* @model RobotsWantedLeague.Controllers.ChangeRobotCountryViewModel *@
 
 @{
     string imageURL = "https://robohash.org/toaster" + Model.Id.ToString() + "?set=set2";
@@ -49,7 +50,7 @@
 
 </table>
 
-@Html.ValidationSummary(true)
+
 
 <!-- Modal -->
 <div class="modal fade" id="changeRobotCountryModal" tabindex="-1" role="dialog"
@@ -66,9 +67,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="newCountry">Entrez le nouveau pays :</label>
-                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Italie">
-                        @* à mettre dans input du haut :  data-val="true"
-                         <span asp-validation-for="NewCountry" class="text-danger"></span> *@
+                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Canada">
+                        @* <span asp-validation-for="NewCountry" class="text-danger"></span> *@
                     </div>
                 </div>
                 <div class="modal-footer">

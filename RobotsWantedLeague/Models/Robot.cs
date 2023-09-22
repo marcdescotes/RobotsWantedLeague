@@ -18,7 +18,6 @@ public class Robot
         this.Weight = Weight;
         this.Height = Height;
         this.Country = Country;
-        // this.NewCountry = NewCountry;
     }
 
 

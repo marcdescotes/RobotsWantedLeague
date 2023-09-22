@@ -6,43 +6,21 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RobotsWantedLeague.Controllers;
 
+
 public class RobotRequest
 {
-    // [AllowedCountry(ErrorMessage = "Le pays n'est pas autorisé.")]
-    // public string NewCountry { get; set; }
     public string Country { get; set; }
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
 
-//     public static readonly List<string> AllowedCountries = new List<string>
-// {
-//     "Canada",
-//     "United States of America",
-//     "Mexico",
-    
-// };
-
 }
 
-// public class AllowedCountryAttribute : ValidationAttribute
-// {
-//     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-//     {
-//         string country = value as string;
-//         if (string.IsNullOrEmpty(country))
-//         {
-//             return ValidationResult.Success;
-//         }
-
-//         if (!CountryConstants.AllowedCountries.Contains(country, StringComparer.OrdinalIgnoreCase))
-//         {
-//             return new ValidationResult(ErrorMessage);
-//         }
-
-//         return ValidationResult.Success;
-//     }
-// }
+public class ChangeRobotCountryViewModel
+{
+    public string NewCountry { get; set; }
+    public string ErrorMessage { get; set; }
+}
 
 
 public class RobotsController : Controller
@@ -92,11 +70,52 @@ public class RobotsController : Controller
         return Ok();
     }
 
-    [HttpPost]
-    public IActionResult ChangeRobotCountry(int robotId, string newCountry)
+    // [HttpPost]
+    // public IActionResult ChangeRobotCountry(int robotId, string newCountry)
+    // {
+    //     robotsService.ChangeRobotCountry(robotId, newCountry);
+    //     return RedirectToAction("Robot", new { id = robotId });
+    // }
+
+
+
+[HttpPost]
+public IActionResult ChangeRobotCountry(int robotId, string newCountry)
+{
+    // Liste des pays valides
+    string[] validCountries = { "Canada", "USA", "Mexico", "Brésil" };
+
+    // Créez une instance de ChangeRobotCountryViewModel
+    var viewModel = new ChangeRobotCountryViewModel { NewCountry = newCountry };
+
+    // Vérifie si le pays soumis est valide
+    if (!validCountries.Contains(newCountry))
+    {
+        // Si le pays n'est pas valide, ajoutez un message d'erreur
+        viewModel.ErrorMessage = "Le pays n'est pas valide. Les pays valides sont : Canada, USA, Mexico, Brésil";
+        // Retournez la vue avec le modèle
+        return View("Robot", viewModel); // Remplacez "VotreVue" par le nom de votre vue
+    }
+
+    // Si le pays est valide, effectuez les actions nécessaires ici
+    try
     {
         robotsService.ChangeRobotCountry(robotId, newCountry);
         return RedirectToAction("Robot", new { id = robotId });
     }
+    catch (Exception ex)
+    {
+        // Gérez les erreurs éventuelles ici
+        viewModel.ErrorMessage = "Une erreur s'est produite lors de la modification du pays du robot.";
+        // Retournez la vue avec le modèle
+        return View("Robot", viewModel); // Remplacez "VotreVue" par le nom de votre vue
+    }
+}
+
+
+
+
+
+
 
 }
