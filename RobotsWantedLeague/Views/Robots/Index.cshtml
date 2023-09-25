@@ -21,7 +21,7 @@
     @foreach (Robot robot in Model)
     {
       <li class="list-group-item">
-        <a href="robots/robot?id=@robot.Id">@robot.Name</a>
+        <a href="/robots/robot?id=@robot.Id">@robot.Name</a>
       </li>
     }
     @if (Model.Count == 0)

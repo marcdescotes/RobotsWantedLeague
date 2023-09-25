@@ -34,17 +34,8 @@ public class RobotsController : Controller
 
     public IActionResult Index()
     {
-        if (TempData["filteredRobots"] is MemoryStream memoryStream)
-        {
-            //  var jsonData = TempData["filteredRobots"];
-            List<Robot>? filteredRobot = JsonSerializer.Deserialize<List<Robot>>(memoryStream);
-            return View(filteredRobot);
-        }
-      
-        else
-        {
             return View(robotsService.Robots);
-        }
+    
     }
     public IActionResult Robot(int id)
     {
@@ -71,7 +62,7 @@ public class RobotsController : Controller
         }
         Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country);
         string htmxRedirectHeaderName = "HX-Redirect";
-        string redirectURL = "/robots/robot?id=" + r.Id;
+        string redirectURL = "/robot?id=" + r.Id;
         Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
         return Ok();
     }
@@ -82,7 +73,7 @@ public class RobotsController : Controller
         robotsService.ChangeRobotCountry(robotId, newCountry);
         return RedirectToAction("Robot", new { id = robotId });
   }
-    
+
     [HttpGet]
     public IActionResult FilterRobots(string filter)
     {
