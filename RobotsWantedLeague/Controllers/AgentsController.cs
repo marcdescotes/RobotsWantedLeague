@@ -40,22 +40,22 @@ public class AgentsController : Controller
         return View(agent);
     }
 
-    [HttpGet]
-    public IActionResult CreateAgent()
-    {
-        return View();
-    }
+    // [HttpGet]
+    // public IActionResult CreateAgent()
+    // {
+    //     return View();
+    // }
 
-    [HttpPost]
-    public IActionResult CreateAgent([FromBody] AgentRequest agent)
-    {
+    // [HttpPost]
+    // public IActionResult CreateAgent([FromBody] AgentRequest agent)
+    // {
 
-        Agent r = agentsService.CreateAgent(agent.Name,
-                                            agent.Continent);
-        string htmxRedirectHeaderName = "HX-Redirect";
-        string redirectURL = "/agents/agent?id=" + r.Id;
-        Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
-        return Ok();
-    }
+    //     Agent r = agentsService.CreateAgent(agent.Name,
+    //                                         agent.Continent);
+    //     string htmxRedirectHeaderName = "HX-Redirect";
+    //     string redirectURL = "/agents/agent?id=" + r.Id;
+    //     Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
+    //     return Ok();
+    // }
 
 }
