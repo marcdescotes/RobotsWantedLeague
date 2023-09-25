@@ -51,10 +51,7 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-        if (!ModelState.IsValid)
-        {
-            return View(robot);
-        }
+
         Robot r = robotsService.CreateRobot(robot.Name,
                                             robot.Weight,
                                             robot.Height,

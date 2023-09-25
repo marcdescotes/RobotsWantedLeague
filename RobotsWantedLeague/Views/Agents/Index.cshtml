@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Agent List";
+}
+@model List<Agent>
+
+<h1 style="text-align: center;">LISTE DES AGENTS</h1>
+
+<div style="margin-bottom: 20px; margin-top: 8%;">
+<ul class="list-group" style="width: 20%; margin-left: auto; margin-right: auto; text-align: center;">
+  @foreach (Agent agent in Model){
+    <li class="list-group-item">
+        <a href="agents/agent?id=@agent.Id">@agent.Name</a>
+    </li>
+  }
+</ul>
+</div>
+

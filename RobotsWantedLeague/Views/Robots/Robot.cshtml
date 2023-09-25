@@ -12,10 +12,9 @@
     </div>
 </div>
 
-
 <table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
 
-    <thead class="thead-dark">
+    <thead>
     <tbody>
         <tr>
             <th>Nom</th>
@@ -49,6 +48,7 @@
 
 </table>
 
+@Html.ValidationSummary(true)
 
 <!-- Modal -->
 <div class="modal fade" id="changeRobotCountryModal" tabindex="-1" role="dialog"
@@ -65,7 +65,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="newCountry">Entrez le nouveau pays :</label>
-                        <input type="text" class="form-control" name="newCountry" id="newCountry" placeholder="Italie">
+                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Italie" data-val="true">
                     </div>
                 </div>
                 <div class="modal-footer">
