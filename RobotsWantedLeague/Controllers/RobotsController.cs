@@ -85,19 +85,17 @@ public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     // Liste des pays valides
     string[] validCountries = { "Canada", "USA", "Mexico", "Brésil" };
 
-    // Créez une instance de ChangeRobotCountryViewModel
     var viewModel = new ChangeRobotCountryViewModel { NewCountry = newCountry };
 
-    // Vérifie si le pays soumis est valide
+    // Vérifie si le pays est valide
     if (!validCountries.Contains(newCountry))
     {
-        // Si le pays n'est pas valide, ajoutez un message d'erreur
+        // Lancer une erreur si le pays n'est pas valide
         viewModel.ErrorMessage = "Le pays n'est pas valide. Les pays valides sont : Canada, USA, Mexico, Brésil";
-        // Retournez la vue avec le modèle
-        return View("Robot", viewModel); // Remplacez "VotreVue" par le nom de votre vue
+        return View("Robot", viewModel); // nom de la vue
     }
 
-    // Si le pays est valide, effectuez les actions nécessaires ici
+    // Si le pays est valide, rouler les fonctions
     try
     {
         robotsService.ChangeRobotCountry(robotId, newCountry);
@@ -105,10 +103,10 @@ public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     }
     catch (Exception ex)
     {
-        // Gérez les erreurs éventuelles ici
+        // Gestion des erreurs
         viewModel.ErrorMessage = "Une erreur s'est produite lors de la modification du pays du robot.";
-        // Retournez la vue avec le modèle
-        return View("Robot", viewModel); // Remplacez "VotreVue" par le nom de votre vue
+
+        return View("Robot", viewModel); // Nom de la vue
     }
 }
 
