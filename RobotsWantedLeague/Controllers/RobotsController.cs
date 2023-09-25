@@ -4,6 +4,8 @@ using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 using System.ComponentModel.DataAnnotations;
 
+using System.Text.Json;
+
 namespace RobotsWantedLeague.Controllers;
 
 public class RobotRequest
@@ -14,27 +16,36 @@ public class RobotRequest
     public int Weight { get; set; }
 }
 
-public class SearchRobotRequest{
-    public string Filter{get; set;}
+public class SearchRobotRequest
+{
+    public string Filter { get; set; }
 }
-
 
 public class RobotsController : Controller
 {
     private readonly ILogger<RobotsController> _logger;
     private readonly IRobotsService robotsService;
 
-    public RobotsController(ILogger<RobotsController> logger,
-                            IRobotsService robotsService)
+    public RobotsController(ILogger<RobotsController> logger, IRobotsService robotsService)
     {
         _logger = logger;
         this.robotsService = robotsService;
     }
+
     public IActionResult Index()
     {
-        return View(robotsService.Robots);
+        if (TempData["filteredRobots"] is MemoryStream memoryStream)
+        {
+            //  var jsonData = TempData["filteredRobots"];
+            List<Robot>? filteredRobot = JsonSerializer.Deserialize<List<Robot>>(memoryStream);
+            return View(filteredRobot);
+        }
+      
+        else
+        {
+            return View(robotsService.Robots);
+        }
     }
-
     public IActionResult Robot(int id)
     {
         Robot? robot = robotsService.GetRobotById(id);
@@ -54,11 +65,11 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-
-        Robot r = robotsService.CreateRobot(robot.Name,
-                                            robot.Weight,
-                                            robot.Height,
-                                            robot.Country);
+        if (!ModelState.IsValid)
+        {
+            return View(robot);
+        }
+        Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country);
         string htmxRedirectHeaderName = "HX-Redirect";
         string redirectURL = "/robots/robot?id=" + r.Id;
         Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
@@ -66,24 +77,18 @@ public class RobotsController : Controller
     }
 
     [HttpPost]
-     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
+    public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
         robotsService.ChangeRobotCountry(robotId, newCountry);
         return RedirectToAction("Robot", new { id = robotId });
-    }
-
-
-    [HttpPost]
-    public IActionResult FilterRobots([FromBody] SearchRobotRequest req)
+  }
+    
+    [HttpGet]
+    public IActionResult FilterRobots(string filter)
     {
-        var filteredRobots = robotsService.FilterRobots(req.Filter);
-        string htmxRedirectHeaderName = "HX-Redirect";
-        string redirectURL = "/robots";
-        Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
-        
-        return Ok();
-        // var filteredRobots = robotsService.FilterRobots(req.Filter);
-        // return View(filteredRobots);
+        var filteredRobots = robotsService.FilterRobots(filter);
+        return View("index", filteredRobots);
     }
-
 }
+
+
