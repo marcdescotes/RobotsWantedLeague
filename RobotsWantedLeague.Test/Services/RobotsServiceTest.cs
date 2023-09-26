@@ -70,8 +70,9 @@ public class RobotsServiceTest
         Robot robot4 = service.CreateRobot("test", 1, 9, "chine", "asia");
 
         Assert.AreEqual(1, service.FilterRobots("canada").Count);
-        Assert.AreEqual(0, service.FilterRobots("jhgsg").Count);
         Assert.AreEqual(2, service.FilterRobots("chine").Count);
+        Assert.AreEqual(1, service.FilterRobots("Europe").Count);
+        Assert.AreEqual(0, service.FilterRobots("jhgsg").Count);
         Assert.AreEqual(0, service.FilterRobots("").Count);
     }
 
