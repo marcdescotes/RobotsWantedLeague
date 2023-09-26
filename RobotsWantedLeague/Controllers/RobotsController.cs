@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
+using System.ComponentModel.DataAnnotations;
+
+using System.Text.Json;
 
 namespace RobotsWantedLeague.Controllers;
 
@@ -11,7 +14,11 @@ public class RobotRequest
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
+}
 
+public class SearchRobotRequest
+{
+    public string Filter { get; set; }
 }
 
 public class ChangeRobotCountryViewModel
@@ -26,8 +33,7 @@ public class RobotsController : Controller
     private readonly IRobotsService robotsService;
     private readonly string[] _validCountries;
 
-    public RobotsController(ILogger<RobotsController> logger,
-                            IRobotsService robotsService)
+    public RobotsController(ILogger<RobotsController> logger, IRobotsService robotsService)
     {
         _logger = logger;
         this.robotsService = robotsService;
@@ -48,9 +54,9 @@ public class RobotsController : Controller
 
     public IActionResult Index()
     {
-        return View(robotsService.Robots);
+            return View(robotsService.Robots);
+    
     }
-
     public IActionResult Robot(int id)
     {
         Robot? robot = robotsService.GetRobotById(id);
@@ -119,4 +125,12 @@ public class RobotsController : Controller
         }
     }
 
+    [HttpGet]
+    public IActionResult FilterRobots(string filter)
+    {
+        var filteredRobots = robotsService.FilterRobots(filter);
+        return View("index", filteredRobots);
+    }
 }
+
+

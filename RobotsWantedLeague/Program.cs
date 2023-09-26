@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IRobotsService, NotEmptyRobotsService>();
+builder.Services.AddSingleton<IAgentsService, NotEmptyAgentsService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,8 +23,18 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Robots}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default", pattern: "{controller=Robots}/{action=Index}/{id?}");
+
+app.Use(
+    (context, next) =>
+    {
+        if (context.Request.Path == "/")
+        {
+            context.Response.Redirect("/robots");
+        }
+
+        return next();
+    }
+);
 
 app.Run();

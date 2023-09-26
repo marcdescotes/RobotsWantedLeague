@@ -1,0 +1,37 @@
+@model Agent
+
+@{
+    string imageURL = "https://good-hawk-21.deno.dev/toaster" + Model.Id.ToString();
+}
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="card mb-3" style="width: 10rem;">
+            <iframe class="card-img-top" src="@imageURL"></iframe>
+        </div>
+    </div>
+</div>
+
+<table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
+
+    <thead>
+    <tbody>
+
+        <tr>
+            <th>Id</th>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>Nom</th>
+            <td>@Model.Name</td>
+        </tr>
+
+        <tr>
+            <th>Continent</th>
+            <td>@Model.Continent</td>
+        </tr>
+
+        </thead>
+    </tbody>
+
+</table>
