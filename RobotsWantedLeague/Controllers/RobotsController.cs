@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
-using System.Text.Json;
 
 namespace RobotsWantedLeague.Controllers;
 
@@ -24,32 +23,16 @@ public class ChangeRobotCountryViewModel
     public string ErrorMessage { get; set; }
 }
 
-public class GetValidCountries
-{
-    public List<string> Countries { get; set; }
-}
 
 public class RobotsController : Controller
 {
     private readonly ILogger<RobotsController> _logger;
     private readonly IRobotsService robotsService;
-    private readonly List<string> _validCountries;
 
     public RobotsController(ILogger<RobotsController> logger, IRobotsService robotsService)
     {
         _logger = logger;
         this.robotsService = robotsService;
-
-        var validCountriesJson = System.IO.File.ReadAllText("data/ValidCountries.json");
-
-        var validCountries = JsonSerializer.Deserialize<GetValidCountries>(validCountriesJson);
-
-        _validCountries = validCountries?.Countries ?? new List<string>();
-    }
-
-    private bool IsCountryValid(string country)
-    {
-        return _validCountries.Contains(char.ToUpper(country[0]) + country.Substring(1));
     }
 
     public IActionResult Index()
@@ -77,9 +60,9 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-        var viewModel = new ChangeRobotCountryViewModel { NewCountry = robot.Country };
-
-        if (!IsCountryValid(robot.Country))
+        _ = new ChangeRobotCountryViewModel { NewCountry = robot.Country };
+        bool IsCountryValid = robotsService.IsCountryValid(robot.Country);
+        if (!IsCountryValid)
         {
             ViewBag.ErrorMessage = "Le pays n'est pas valide.";
             return View("_RobotErrorMessages");
@@ -101,12 +84,11 @@ public class RobotsController : Controller
 
         var viewModel = new ChangeRobotCountryViewModel { NewCountry = newCountry };
 
-        // Vérifie si le pays est valide
-        if (!IsCountryValid(newCountry))
+        bool IsCountryValid = robotsService.IsCountryValid(newCountry);
+        if (!IsCountryValid)
         {
-            // Lancer une erreur si le pays n'est pas valide
             ViewBag.ErrorMessage = "Le pays n'est pas valide.";
-            return View("Robot", robotsService.GetRobotById(robotId)); // nom de la vue
+            return View("Robot", robotsService.GetRobotById(robotId));
         }
 
         newCountry = char.ToUpper(newCountry[0]) + newCountry.Substring(1);
