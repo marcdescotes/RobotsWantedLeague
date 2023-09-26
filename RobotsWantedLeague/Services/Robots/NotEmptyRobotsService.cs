@@ -5,7 +5,10 @@ using RobotsWantedLeague.Models;
 public class NotEmptyRobotsService : IRobotsService
 {
     private readonly IRobotsService underlyingRobotsService;
-    public List<Robot> Robots { get => underlyingRobotsService.Robots; }
+    public List<Robot> Robots
+    {
+        get => underlyingRobotsService.Robots;
+    }
 
     public NotEmptyRobotsService()
     {
@@ -15,18 +18,20 @@ public class NotEmptyRobotsService : IRobotsService
         this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan");
     }
 
-    public Robot CreateRobot(string name,
-                          int weight,
-                          int height,
-                          string country)
+    public Robot CreateRobot(string name, int weight, int height, string country)
     {
         return underlyingRobotsService.CreateRobot(name, weight, height, country);
     }
 
-
     public Robot? GetRobotById(int id)
     {
         return underlyingRobotsService.GetRobotById(id);
+    }
+
+    public List<Robot> FilterRobots(string filter)
+    {
+        IEnumerable<Robot> q = from robot in Robots where robot.Country == filter select robot;
+        return q.ToList();
     }
 
     public bool DeleteRobotById(int id)
@@ -38,5 +43,4 @@ public class NotEmptyRobotsService : IRobotsService
     {
         underlyingRobotsService.ChangeRobotCountry(robotId, newCountry);
     }
-
 }
