@@ -6,6 +6,13 @@
 }
 
 <div class="container">
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <div class="d-flex justify-content-center">
         <div class="card mb-3" style="width: 10rem;">
             <img class="card-img-top" src="@imageURL">
