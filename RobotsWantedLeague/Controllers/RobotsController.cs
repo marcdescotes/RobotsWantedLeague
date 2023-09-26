@@ -69,15 +69,6 @@ public class RobotsController : Controller
         return Ok();
     }
 
-    // [HttpPost]
-    // public IActionResult ChangeRobotCountry(int robotId, string newCountry)
-    // {
-    //     robotsService.ChangeRobotCountry(robotId, newCountry);
-    //     return RedirectToAction("Robot", new { id = robotId });
-    // }
-
-
-
     [HttpPost]
     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
