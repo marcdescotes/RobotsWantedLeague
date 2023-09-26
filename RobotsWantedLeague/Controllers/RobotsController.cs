@@ -69,6 +69,8 @@ public class RobotsController : Controller
         return Ok();
     }
 
+
+
     [HttpPost]
     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
@@ -97,7 +99,6 @@ public class RobotsController : Controller
         }
         catch (Exception ex)
         {
-            // Gestion des erreurs
             viewModel.ErrorMessage = "Une erreur s'est produite lors de la modification du pays du robot.";
 
             return View("Robot", viewModel);
