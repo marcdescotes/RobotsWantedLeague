@@ -79,4 +79,13 @@ public class RobotsService : IRobotsService
             robot.Country = newCountry;
         }
     }
+    
+    public void ChangeRobotContinent(int robotId, string newContinent)
+    {
+        Robot robot = GetRobotById(robotId);
+        if (robot != null)
+        {
+            robot.Continent = newContinent;
+        }
+    }
 }

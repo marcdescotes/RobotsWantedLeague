@@ -30,8 +30,8 @@ public class NotEmptyRobotsService : IRobotsService
 
     public List<Robot> FilterRobots(string filter)
     {
-        IEnumerable<Robot> q = from robot in Robots where robot.Country == filter select robot;
-        return q.ToList();
+        // IEnumerable<Robot> q = from robot in Robots where robot.Country == filter select robot;
+        return underlyingRobotsService.FilterRobots(filter).ToList();
     }
 
     public bool DeleteRobotById(int id)
@@ -42,5 +42,10 @@ public class NotEmptyRobotsService : IRobotsService
     public void ChangeRobotCountry(int robotId, string newCountry)
     {
         underlyingRobotsService.ChangeRobotCountry(robotId, newCountry);
+    }
+
+    public void ChangeRobotContinent(int robotId, string newContinent)
+    {
+        underlyingRobotsService.ChangeRobotContinent(robotId, newContinent);
     }
 }

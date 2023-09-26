@@ -12,6 +12,7 @@ public interface IRobotsService
     public Robot? GetRobotById(int id);
     public bool DeleteRobotById(int id);
     public void ChangeRobotCountry(int robotId, string newCountry);
+    public void ChangeRobotContinent(int robotId, string newContinent);
 
     public List<Robot> FilterRobots(string filter);
 

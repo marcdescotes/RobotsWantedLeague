@@ -81,6 +81,14 @@ public class RobotsController : Controller
         return RedirectToAction("Robot", new { id = robotId });
     }
 
+    [HttpPost]
+    public IActionResult ChangeRobotContinent(int robotId, string newContinent)
+    {
+        robotsService.ChangeRobotContinent(robotId, newContinent);
+
+        return RedirectToAction("Robot", new { id = robotId });
+    }
+
     [HttpGet]
     public IActionResult FilterRobots(string filter)
     {
