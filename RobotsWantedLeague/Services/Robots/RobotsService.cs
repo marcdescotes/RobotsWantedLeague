@@ -22,17 +22,36 @@ public class RobotsService : IRobotsService
         return idGenerator;
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country)
+    public Robot CreateRobot(string name, int weight, int height, string country, string continent)
     {
-        var robot = new Robot(generateId(), name, weight, height, country);
+        var robot = new Robot(generateId(), name, weight, height, country, continent);
         robots.Add(robot);
         return robot;
     }
 
     public List<Robot> FilterRobots(string filter)
     {
-        IEnumerable<Robot> q = from robot in Robots where robot.Country == filter select robot;
-        return q.ToList();
+        IEnumerable<Robot> qCountry =
+            from robot in Robots
+            where robot.Country == filter
+            select robot;
+
+        List<Robot> qCountryList = qCountry.ToList();
+
+        if (qCountryList.Count != 0)
+        {
+            return qCountryList;
+        }
+        else
+        {
+            IEnumerable<Robot> qContinent =
+                from robot in Robots
+                where robot.Continent == filter
+                select robot;
+
+            List<Robot> qContinentList = qContinent.ToList();
+            return qContinentList;
+        }
     }
 
     private int getIndexOfRobotById(int id)
@@ -77,6 +96,15 @@ public class RobotsService : IRobotsService
         {
             robot.VisitedCountries.Add(robot.Country);
             robot.Country = newCountry;
+        }
+    }
+
+    public void ChangeRobotContinent(int robotId, string newContinent)
+    {
+        Robot robot = GetRobotById(robotId);
+        if (robot != null)
+        {
+            robot.Continent = newContinent;
         }
     }
 }

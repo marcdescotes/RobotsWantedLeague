@@ -10,7 +10,7 @@ public class RobotsControllerTest
     public void TestCreateRobot()
     {
         RobotsService service = new RobotsService();
-        Robot robot = service.CreateRobot("paul", 2, 3, "canada");
+        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
         Assert.AreEqual(robot.Name, "paul");
         Assert.AreEqual(robot.Weight, 2);
     }
