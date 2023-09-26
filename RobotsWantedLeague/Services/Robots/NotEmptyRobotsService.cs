@@ -13,14 +13,14 @@ public class NotEmptyRobotsService : IRobotsService
     public NotEmptyRobotsService()
     {
         this.underlyingRobotsService = new RobotsService();
-        this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan");
-        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu");
-        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan");
+        this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan", "Asia");
+        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu", "Oceania");
+        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", "Asia");
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country)
+    public Robot CreateRobot(string name, int weight, int height, string country, string continent)
     {
-        return underlyingRobotsService.CreateRobot(name, weight, height, country);
+        return underlyingRobotsService.CreateRobot(name, weight, height, country, continent);
     }
 
     public Robot? GetRobotById(int id)

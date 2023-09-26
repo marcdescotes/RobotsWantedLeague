@@ -22,9 +22,9 @@ public class RobotsService : IRobotsService
         return idGenerator;
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country)
+    public Robot CreateRobot(string name, int weight, int height, string country, string continent)
     {
-        var robot = new Robot(generateId(), name, weight, height, country);
+        var robot = new Robot(generateId(), name, weight, height, country, continent);
         robots.Add(robot);
         return robot;
     }
