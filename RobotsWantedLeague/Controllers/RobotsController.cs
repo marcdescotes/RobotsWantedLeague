@@ -56,13 +56,14 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
+        
         if (!ModelState.IsValid)
         {
             return View(robot);
         }
         Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country);
         string htmxRedirectHeaderName = "HX-Redirect";
-        string redirectURL = "/robot?id=" + r.Id;
+        string redirectURL = "/robots/robot?id=" + r.Id;
         Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
         return Ok();
     }

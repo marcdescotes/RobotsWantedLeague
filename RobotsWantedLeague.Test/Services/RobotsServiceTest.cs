@@ -61,5 +61,18 @@ public class RobotsServiceTest
         Assert.IsNull(service.GetRobotById(robot2.Id));
     }
 
+    [TestMethod]
+    public void  FilterRobots(){
+        RobotsService service = new RobotsService();
+        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada");
+        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france");
+        Robot robot3 = service.CreateRobot("xu", 1, 9, "chine");
+        Robot robot4 = service.CreateRobot("test", 1, 9, "chine");
+
+        Assert.AreEqual(1, service.FilterRobots("canada").Count);
+        Assert.AreEqual(0, service.FilterRobots("jhgsg").Count);
+        Assert.AreEqual(2, service.FilterRobots("chine").Count);
+        Assert.AreEqual(0, service.FilterRobots("").Count);
+    }
 
 }
