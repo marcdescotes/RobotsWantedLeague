@@ -21,7 +21,7 @@ public class RobotsServiceTest
     {
         RobotsService service = new RobotsService();
         Assert.IsNull(service.GetRobotById(98));
-        Robot robot = service.CreateRobot("paul", 2, 3, "canada","Nord America");
+        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
         Robot? ret = service.GetRobotById(robot.Id);
         Assert.IsNotNull(ret);
         Assert.AreEqual(robot.Name, ret.Name);
@@ -56,13 +56,24 @@ public class RobotsServiceTest
         Robot robot3 = service.CreateRobot("xu", 1, 9, "chine", "Asia");
 
         Assert.IsTrue(service.DeleteRobotById(robot2.Id));
-        
+
         Assert.AreEqual(2, service.Robots.Count);
         Assert.IsNull(service.GetRobotById(robot2.Id));
     }
 
     [TestMethod]
-    public void  FilterRobots(){
+    public void Test_ValidCountry()
+    {
+        RobotsService service = new RobotsService();
+
+        Assert.IsTrue(service.IsCountryValid("Canada"));
+        Assert.IsFalse(service.IsCountryValid("awdaefwfd"));
+        Assert.IsTrue(service.IsNullOrWhiteSpace(""));
+    }
+
+    [TestMethod]
+    public void FilterRobots()
+    {
         RobotsService service = new RobotsService();
         Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
         Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe");

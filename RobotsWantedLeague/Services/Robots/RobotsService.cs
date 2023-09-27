@@ -1,9 +1,11 @@
 namespace RobotsWantedLeague.Services;
 
+using System.Text.Json;
 using RobotsWantedLeague.Models;
 
 public class RobotsService : IRobotsService
 {
+    private readonly List<string> _validCountries;
     private readonly List<Robot> robots;
     private int idGenerator = 0;
     public List<Robot> Robots
@@ -14,6 +16,10 @@ public class RobotsService : IRobotsService
     public RobotsService()
     {
         robots = new List<Robot>();
+
+        var validCountriesJson = System.IO.File.ReadAllText("data/ValidCountries.json");
+        var validCountries = JsonSerializer.Deserialize<GetValidCountries>(validCountriesJson);
+        _validCountries = validCountries?.Countries ?? new List<string>();
     }
 
     private int generateId()
@@ -107,4 +113,30 @@ public class RobotsService : IRobotsService
             robot.Continent = newContinent;
         }
     }
+
+    public class GetValidCountries
+    {
+        public List<string> Countries { get; set; }
+    }
+
+    public bool IsCountryValid(string country)
+    {
+        return _validCountries.Contains(char.ToUpper(country[0]) + country.Substring(1));
+    }
+
+    public bool IsNullOrWhiteSpace(string value)
+    {
+        return string.IsNullOrWhiteSpace(value);
+    }
+
+
 }
+
+
+
+
+
+
+
+
+

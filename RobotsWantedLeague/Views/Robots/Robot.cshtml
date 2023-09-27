@@ -4,9 +4,14 @@
     string imageURL = "https://robohash.org/toaster" + Model.Id.ToString() + "?set=set2";
 }
 
-
-
 <div class="container">
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
     <div class="d-flex justify-content-center">
         <div class="card mb-3" style="width: 10rem;">
             <img class="card-img-top" src="@imageURL">
@@ -16,6 +21,7 @@
 
 <table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
 
+    <thead>
     <thead>
     <tbody>
         <tr>
@@ -60,7 +66,6 @@
 
 </table>
 
-@Html.ValidationSummary(true)
 
 <!-- Modal Country -->
 <div class="modal fade" id="changeRobotCountryModal" tabindex="-1" role="dialog"

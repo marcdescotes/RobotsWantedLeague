@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 using System.ComponentModel.DataAnnotations;
@@ -22,6 +21,13 @@ public class SearchRobotRequest
     public string Filter { get; set; }
 }
 
+public class ChangeRobotCountryViewModel
+{
+    public string NewCountry { get; set; }
+    public string ErrorMessage { get; set; }
+}
+
+
 public class RobotsController : Controller
 {
     private readonly ILogger<RobotsController> _logger;
@@ -36,9 +42,8 @@ public class RobotsController : Controller
     public IActionResult Index()
     {
         return View(robotsService.Robots);
+
     }
-
-
     public IActionResult Robot(int id)
     {
         Robot? robot = robotsService.GetRobotById(id);
@@ -49,6 +54,7 @@ public class RobotsController : Controller
         return View(robot);
     }
 
+
     [HttpGet]
     public IActionResult CreateRobot()
     {
@@ -58,9 +64,21 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
+        if (string.IsNullOrWhiteSpace(robot.Country))
+        {
+            ViewBag.ErrorMessage = "Veuillez inscrire un pays.";
+            return View("_RobotErrorMessages");
+        }
         if (!ModelState.IsValid)
         {
             return View(robot);
+        }
+
+        bool IsCountryValid = robotsService.IsCountryValid(robot.Country);
+        if (!IsCountryValid)
+        {
+            ViewBag.ErrorMessage = "Le pays n'est pas valide.";
+            return View("_RobotErrorMessages");
         }
         Robot r = robotsService.CreateRobot(
             robot.Name,
@@ -75,11 +93,43 @@ public class RobotsController : Controller
         return Ok();
     }
 
+
     [HttpPost]
     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
-        robotsService.ChangeRobotCountry(robotId, newCountry);
-        return RedirectToAction("Robot", new { id = robotId });
+        if (string.IsNullOrWhiteSpace(newCountry))
+        {
+            ViewBag.ErrorMessage = "Veuillez inscrire un pays.";
+            return View("Robot", robotsService.GetRobotById(robotId));
+        }
+
+        var viewModel = new ChangeRobotCountryViewModel { NewCountry = newCountry };
+
+        bool IsCountryValid = robotsService.IsCountryValid(newCountry);
+        if (!IsCountryValid)
+        {
+            ViewBag.ErrorMessage = "Le pays n'est pas valide.";
+            return View("Robot", robotsService.GetRobotById(robotId));
+        }
+        newCountry = char.ToUpper(newCountry[0]) + newCountry.Substring(1);
+        try
+        {
+            robotsService.ChangeRobotCountry(robotId, newCountry);
+            return RedirectToAction("Robot", new { id = robotId });
+        }
+        catch (Exception ex)
+        {
+            viewModel.ErrorMessage = "Une erreur s'est produite lors de la modification du pays du robot.";
+
+            return View("Robot", viewModel);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult FilterRobots(string filter)
+    {
+        var filteredRobots = robotsService.FilterRobots(filter);
+        return View("index", filteredRobots);
     }
 
     [HttpPost]
@@ -90,10 +140,4 @@ public class RobotsController : Controller
         return RedirectToAction("Robot", new { id = robotId });
     }
 
-    [HttpGet]
-    public IActionResult FilterRobots(string filter)
-    {
-        var filteredRobots = robotsService.FilterRobots(filter);
-        return View("index", filteredRobots);
-    }
 }
