@@ -1,4 +1,4 @@
-namespace RobotsWantedLeague.Test.Services;
+namespace RobotsWantedLeague.Test.Services.Robots;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 
@@ -11,7 +11,7 @@ public class NotEmptyRobotsServiceTest
     {
         IRobotsService service = new NotEmptyRobotsService();
         Assert.AreEqual(3, service.Robots.Count);
-        Robot robot = service.CreateRobot("paul", 2, 3, "canada");
+        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
         Assert.AreEqual(robot.Name, "paul");
         Assert.AreEqual(robot.Weight, 2);
 

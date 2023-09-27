@@ -1,9 +1,11 @@
 namespace RobotsWantedLeague.Services;
 
+using System.Text.Json;
 using RobotsWantedLeague.Models;
 
 public class RobotsService : IRobotsService
 {
+    private readonly List<string> _validCountries;
     private readonly List<Robot> robots;
     private int idGenerator = 0;
     public List<Robot> Robots
@@ -14,6 +16,10 @@ public class RobotsService : IRobotsService
     public RobotsService()
     {
         robots = new List<Robot>();
+
+        var validCountriesJson = System.IO.File.ReadAllText("data/ValidCountries.json");
+        var validCountries = JsonSerializer.Deserialize<GetValidCountries>(validCountriesJson);
+        _validCountries = validCountries?.Countries ?? new List<string>();
     }
 
     private int generateId()
@@ -22,17 +28,36 @@ public class RobotsService : IRobotsService
         return idGenerator;
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country, Agent assignedAgent)
+    public Robot CreateRobot(string name, int weight, int height, string country, string continent, Agent assignedAgent)
     {
-        var robot = new Robot(generateId(), name, weight, height, country, assignedAgent);
+        var robot = new Robot(generateId(), name, weight, height, country, continent, assignedAgent);
         robots.Add(robot);
         return robot;
     }
 
     public List<Robot> FilterRobots(string filter)
     {
-        IEnumerable<Robot> q = from robot in Robots where robot.Country == filter select robot;
-        return q.ToList();
+        IEnumerable<Robot> qCountry =
+            from robot in Robots
+            where robot.Country == filter
+            select robot;
+
+        List<Robot> qCountryList = qCountry.ToList();
+
+        if (qCountryList.Count != 0)
+        {
+            return qCountryList;
+        }
+        else
+        {
+            IEnumerable<Robot> qContinent =
+                from robot in Robots
+                where robot.Continent == filter
+                select robot;
+
+            List<Robot> qContinentList = qContinent.ToList();
+            return qContinentList;
+        }
     }
 
     private int getIndexOfRobotById(int id)
@@ -99,4 +124,38 @@ public class RobotsService : IRobotsService
             }
         }
     }
+
+    public void ChangeRobotContinent(int robotId, string newContinent)
+    {
+        Robot robot = GetRobotById(robotId);
+        if (robot != null)
+        {
+            robot.Continent = newContinent;
+        }
+    }
+
+    public class GetValidCountries
+    {
+        public List<string> Countries { get; set; }
+    }
+
+    public bool IsCountryValid(string country)
+    {
+        return _validCountries.Contains(char.ToUpper(country[0]) + country.Substring(1));
+    }
+
+    public bool IsNullOrWhiteSpace(string value)
+    {
+        return string.IsNullOrWhiteSpace(value);
+    }
+
 }
+
+
+
+
+
+
+
+
+
