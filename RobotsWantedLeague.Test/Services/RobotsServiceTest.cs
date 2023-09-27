@@ -62,13 +62,13 @@ public class RobotsServiceTest
     }
 
     [TestMethod]
-    public void IsCountryValid_ValidCountry()
+    public void Test_ValidCountry()
     {
         RobotsService service = new RobotsService();
 
         Assert.IsTrue(service.IsCountryValid("Canada"));
         Assert.IsFalse(service.IsCountryValid("awdaefwfd"));
-        // Assert.IsFalse(service.IsCountryValid(""));
+        Assert.IsTrue(service.IsNullOrWhiteSpace(""));
     }
 
     [TestMethod]
