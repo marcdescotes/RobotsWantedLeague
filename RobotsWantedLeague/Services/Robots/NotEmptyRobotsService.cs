@@ -1,21 +1,37 @@
 namespace RobotsWantedLeague.Services;
 
+using System.Text.Json;
 using RobotsWantedLeague.Models;
 
 public class NotEmptyRobotsService : IRobotsService
 {
+    private readonly List<string> _validCountries;
     private readonly IRobotsService underlyingRobotsService;
     public List<Robot> Robots
     {
         get => underlyingRobotsService.Robots;
     }
 
+    public class GetValidCountries
+    {
+        public List<string> Countries { get; set; }
+    }
+
+    public bool IsCountryValid(string country)
+    {
+        return _validCountries.Contains(char.ToUpper(country[0]) + country.Substring(1));
+    }
+
     public NotEmptyRobotsService()
     {
         this.underlyingRobotsService = new RobotsService();
         this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan", "Asia");
-        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu", "Oceania");
-        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", "Asia");
+        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu", "Europe");
+        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", "Antarctica");
+
+        var validCountriesJson = System.IO.File.ReadAllText("data/ValidCountries.json");
+        var validCountries = JsonSerializer.Deserialize<GetValidCountries>(validCountriesJson);
+        _validCountries = validCountries?.Countries ?? new List<string>();
     }
 
     public Robot CreateRobot(string name, int weight, int height, string country, string continent)

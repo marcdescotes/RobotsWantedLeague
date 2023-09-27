@@ -1,6 +1,8 @@
+<div id="nimportequoi"></div>
 <form hx-post="/robots/createRobot"
        hx-ext="json-enc"
        hx-trigger="submit"
+       hx-target="#nimportequoi"
        style="width: 40%; margin-left: auto; margin-right: auto;">
   <div class="form-group">
     <label for="name">Le nom du robot</label>
@@ -8,7 +10,7 @@
            class="form-control" 
            id="name" 
            name="name"
-           placeholder="Le Géant Ferré">
+           placeholder="Le Géant Ferré" required>
   </div>
   <div class="form-group">
     <label for="weight">Poids (kg)</label>
@@ -17,7 +19,7 @@
            id="weight"
            name="weight"
            min="0"
-           placeholder="87">
+           placeholder="87" required>
   </div>
 
   <div class="form-group">
@@ -27,7 +29,7 @@
            id="height"
            name="height"
            min="0"
-           placeholder="2">
+           placeholder="2" required>
   </div>
 
   <div class="form-group">
