@@ -28,9 +28,9 @@ public class NotEmptyRobotsService : IRobotsService
         this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", agentDoggett);
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country, Agent agentAssigné)
+    public Robot CreateRobot(string name, int weight, int height, string country, Agent assignedAgent)
     {
-        return underlyingRobotsService.CreateRobot(name, weight, height, country, agentAssigné);
+        return underlyingRobotsService.CreateRobot(name, weight, height, country, assignedAgent);
     }
 
     public Robot? GetRobotById(int id)
@@ -52,5 +52,10 @@ public class NotEmptyRobotsService : IRobotsService
     public void ChangeRobotCountry(int robotId, string newCountry)
     {
         underlyingRobotsService.ChangeRobotCountry(robotId, newCountry);
+    }
+    
+    public void ChangeRobotAgent(int robotId, Agent newAgent)
+    {
+        underlyingRobotsService.ChangeRobotAgent(robotId, newAgent);
     }
 }

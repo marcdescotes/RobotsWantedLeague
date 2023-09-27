@@ -22,9 +22,9 @@ public class RobotsService : IRobotsService
         return idGenerator;
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country, Agent agentAssigné)
+    public Robot CreateRobot(string name, int weight, int height, string country, Agent assignedAgent)
     {
-        var robot = new Robot(generateId(), name, weight, height, country, agentAssigné);
+        var robot = new Robot(generateId(), name, weight, height, country, assignedAgent);
         robots.Add(robot);
         return robot;
     }
@@ -85,17 +85,17 @@ public class RobotsService : IRobotsService
         Robot robot = GetRobotById(robotId);
         if (robot != null)
         {
-            if (robot.AgentAssigné != null)
+            if (robot.AssignedAgent != null)
             {
-                robot.AgentAssigné.RobotsAssignés.Remove(robot);
-                robot.AnciensAgentsAssignés.Add(robot.AgentAssigné);
+                robot.AssignedAgent.AssignedRobots.Remove(robot);
+                robot.FormerAssignedAgents.Add(robot.AssignedAgent);
             }
 
-            robot.AgentAssigné = newAgent;
+            robot.AssignedAgent = newAgent;
 
             if (newAgent != null)
             {
-                newAgent.RobotsAssignés.Add(robot);
+                newAgent.AssignedRobots.Add(robot);
             }
         }
     }

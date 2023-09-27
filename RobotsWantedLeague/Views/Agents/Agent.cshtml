@@ -31,6 +31,23 @@
             <td>@Model.Continent</td>
         </tr>
 
+        <tr>
+            <th>Robots actuellement assignés</th>
+            <td>
+                <ul>
+                        @foreach (var robot in Model.AssignedRobots)
+                        {
+                        <li>@robot.Name</li>
+                        }
+                </ul>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Anciens robots assignés</th>
+            <td>@string.Join(", ", Model.FormerAssignedRobots)</td>
+        </tr>
+
         </thead>
     </tbody>
 

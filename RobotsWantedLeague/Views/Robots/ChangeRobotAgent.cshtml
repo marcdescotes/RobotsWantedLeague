@@ -1,0 +1,16 @@
+@model Robot;
+
+<h2>Modifier l'Agent Assigné au Robot</h2>
+
+<form asp-action="UpdateRobotAgent" asp-route-robotId="@Model.Id" method="post">
+    <div class="form-group">
+        <label for="agentId">Sélectionnez un nouvel agent :</label>
+        <select class="form-control" id="agentId" name="AgentId">
+            @foreach (var agent in (List<Agent>)ViewData["Agents"])
+            {
+                <option value="@agent.Id">@agent.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+</form>

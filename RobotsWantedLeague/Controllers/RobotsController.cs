@@ -15,6 +15,7 @@ public class RobotRequest
     public string Name { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
+    public string AgentName { get; set; }
 }
 
 public class SearchRobotRequest
@@ -56,7 +57,7 @@ public class RobotsController : Controller
         return View();
     }
 
-   [HttpPost]
+    [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
         if (!ModelState.IsValid)
@@ -64,20 +65,18 @@ public class RobotsController : Controller
             return View(robot);
         }
 
-        string agentName = HttpContext.Request.Form["AgentName"];
+        Agent assignedAgent = agentsService.Agents.FirstOrDefault(agent => agent.Name == robot.AgentName);
 
-        Agent agentAssigné = agentsService.Agents.FirstOrDefault(agent => agent.Name == agentName);
-
-        if (agentAssigné != null)
+        if (assignedAgent != null)
         {
-            Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country, agentAssigné);
+            Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country, assignedAgent);
 
-            if (r.AgentAssigné != null)
+            if (r.AssignedAgent != null)
             {
-                r.AgentAssigné.AnciensRobotsAssignés.Add(r);
+                r.AssignedAgent.FormerAssignedRobots.Add(r);
             }
 
-            agentAssigné.RobotsAssignés.Add(r);
+            assignedAgent.AssignedRobots.Add(r);
 
             string htmxRedirectHeaderName = "HX-Redirect";
             string redirectURL = "/robots/robot?id=" + r.Id;
@@ -105,6 +104,43 @@ public class RobotsController : Controller
         var filteredRobots = robotsService.FilterRobots(filter);
         return View("index", filteredRobots);
     }
+    [HttpGet]
+    public IActionResult ChangeRobotAgent(int robotId)
+    {
+        Robot robot = robotsService.GetRobotById(robotId);
+        if (robot == null)
+        {
+            return NotFound();
+        }
+
+        List<Agent> agents = agentsService.Agents.ToList();
+
+        ViewData["Agents"] = agents;
+        ViewData["Robot"] = robot;
+
+        return View();
+    }
+
+
+    [HttpPost]
+    public IActionResult UpdateRobotAgent(int robotId, int agentId)
+    {
+        Robot robot = robotsService.GetRobotById(robotId);
+        if (robot == null)
+        {
+            return NotFound();
+        }
+
+        Agent newAgent = agentsService.Agents.FirstOrDefault(agent => agent.Id == agentId);
+        if (newAgent != null)
+        {
+            robotsService.ChangeRobotAgent(robotId, newAgent);
+
+            return RedirectToAction("Robot", new { id = robotId });
+        }
+        else
+        {
+            return BadRequest("Agent non trouvé.");
+        }
+    }
 }
-
-

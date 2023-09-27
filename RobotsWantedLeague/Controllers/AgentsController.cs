@@ -59,14 +59,14 @@ public class AgentsController : Controller
 
         string robotName = HttpContext.Request.Form["RobotName"];
 
-        Robot robotAssigné = robotsService.Robots.FirstOrDefault(robot => robot.Name == robotName);
+        Robot assignedRobot = robotsService.Robots.FirstOrDefault(robot => robot.Name == robotName);
 
         Agent agent = agentsService.CreateAgent(agentRequest.Name, agentRequest.Continent);
 
-        if (robotAssigné != null)
+        if (assignedRobot != null)
         {
-            robotAssigné.AgentAssigné = agent;
-            agent.RobotsAssignés.Add(robotAssigné);
+            assignedRobot.AssignedAgent = agent;
+            agent.AssignedRobots.Add(assignedRobot);
         }
 
         return RedirectToAction("Agent", new { id = agent.Id });

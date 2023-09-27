@@ -9,10 +9,11 @@ public interface IRobotsService
                           int weight,
                           int height,
                           string country,
-                          Agent agentAssigné);
+                          Agent assignedAgent);
     public Robot? GetRobotById(int id);
     public bool DeleteRobotById(int id);
     public void ChangeRobotCountry(int robotId, string newCountry);
+    public void ChangeRobotAgent(int robotId, Agent newAgent);
 
     public List<Robot> FilterRobots(string filter);
 

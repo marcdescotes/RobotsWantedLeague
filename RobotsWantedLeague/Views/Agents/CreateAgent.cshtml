@@ -1,0 +1,24 @@
+<form hx-post="/agents/createAgent"
+       hx-ext="json-enc"
+       hx-trigger="submit"
+       style="width: 40%; margin-left: auto; margin-right: auto;">
+  <div class="form-group">
+    <label for="Name">Nom de l'Agent :</label>
+    <input type="text" 
+           class="form-control" 
+           id="Name" 
+           name="Name"
+           placeholder="Rafiki"
+           required>
+  </div>
+  <div class="form-group">
+    <label for="Continent">Continent :</label>
+    <input type="text" 
+           class="form-control" 
+           id="Continent"
+           name="Continent"
+           placeholder="Océanie"
+           required>
+  </div>
+<button type="submit" class="btn btn-primary mt-3">Soumettre</button>
+</form>

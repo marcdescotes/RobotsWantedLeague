@@ -4,8 +4,6 @@
     string imageURL = "https://robohash.org/toaster" + Model.Id.ToString() + "?set=set2";
 }
 
-
-
 <div class="container">
     <div class="d-flex justify-content-center">
         <div class="card mb-3" style="width: 10rem;">
@@ -45,6 +43,21 @@
             <th>Pays visités</th>
             <td>@string.Join(", ", Model.VisitedCountries)</td>
         </tr>
+
+        <tr>
+            <th>Agent Assigné</th>
+            <td>
+                    @if (Model.AssignedAgent != null)
+                    {
+                    <p>@Model.AssignedAgent.Name</p>
+                    }
+                    else
+                    {
+                    <p>Aucun agent assigné</p>
+                    }
+            </td>
+        </tr>
+
         </thead>
     </tbody>
 
@@ -52,7 +65,8 @@
 
 @Html.ValidationSummary(true)
 
-<!-- Modal -->
+
+
 <div class="modal fade" id="changeRobotCountryModal" tabindex="-1" role="dialog"
     aria-labelledby="changeRobotCountryModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -67,7 +81,36 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="newCountry">Entrez le nouveau pays :</label>
-                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Italie" data-val="true">
+                        <input type="text" class="form-control" name="NewCountry" id="newCountry" placeholder="Italie"
+                            data-val="true">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="changeAgentModal" tabindex="-1" role="dialog" aria-labelledby="changeRobotCountryModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-action="ChangeRobotAgent" asp-route-robotId="@Model.Id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changeAgentModalLabel">Modification de l'Agent assigné</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newCountry">Entrez le nouvel Agent assigné :</label>
+                        <input type="text" class="form-control" name="NewAgentId" id="newAgent"
+                            placeholder="Nom de l'Agent assigné" data-val="true">
                     </div>
                 </div>
                 <div class="modal-footer">
