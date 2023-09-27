@@ -25,6 +25,10 @@ public class NotEmptyRobotsService : IRobotsService
     public NotEmptyRobotsService()
     {
         this.underlyingRobotsService = new RobotsService();
+        this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan", "Asia");
+        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu", "Europe");
+        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", "Antarctica");
+
         var validCountriesJson = System.IO.File.ReadAllText("data/ValidCountries.json");
         var validCountries = JsonSerializer.Deserialize<GetValidCountries>(validCountriesJson);
         _validCountries = validCountries?.Countries ?? new List<string>();

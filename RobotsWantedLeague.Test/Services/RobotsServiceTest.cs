@@ -61,8 +61,6 @@ public class RobotsServiceTest
         Assert.IsNull(service.GetRobotById(robot2.Id));
     }
 
-
-
     [TestMethod]
     public void IsCountryValid_ValidCountry()
     {

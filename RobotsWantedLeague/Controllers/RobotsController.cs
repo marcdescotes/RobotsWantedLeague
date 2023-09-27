@@ -64,10 +64,16 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
+        if (string.IsNullOrWhiteSpace(robot.Country))
+        {
+            ViewBag.ErrorMessage = "Veuillez inscrire un pays.";
+            return View("_RobotErrorMessages");
+        }
         if (!ModelState.IsValid)
         {
             return View(robot);
-        }        _ = new ChangeRobotCountryViewModel { NewCountry = robot.Country };
+        }
+        // AUCUN CHANGEMENT SANS CETTE LIGNE : _ = new ChangeRobotCountryViewModel { NewCountry = robot.Country };
         bool IsCountryValid = robotsService.IsCountryValid(robot.Country);
         if (!IsCountryValid)
         {
@@ -91,6 +97,11 @@ public class RobotsController : Controller
     [HttpPost]
     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
+        if (string.IsNullOrWhiteSpace(newCountry))
+        {
+            ViewBag.ErrorMessage = "Veuillez inscrire un pays.";
+            return View("Robot", robotsService.GetRobotById(robotId));
+        }
 
         var viewModel = new ChangeRobotCountryViewModel { NewCountry = newCountry };
 
@@ -100,10 +111,7 @@ public class RobotsController : Controller
             ViewBag.ErrorMessage = "Le pays n'est pas valide.";
             return View("Robot", robotsService.GetRobotById(robotId));
         }
-
         newCountry = char.ToUpper(newCountry[0]) + newCountry.Substring(1);
-
-        // Si le pays est valide, rouler les fonctions
         try
         {
             robotsService.ChangeRobotCountry(robotId, newCountry);
@@ -123,6 +131,7 @@ public class RobotsController : Controller
         var filteredRobots = robotsService.FilterRobots(filter);
         return View("index", filteredRobots);
     }
+
     [HttpPost]
     public IActionResult ChangeRobotContinent(int robotId, string newContinent)
     {
