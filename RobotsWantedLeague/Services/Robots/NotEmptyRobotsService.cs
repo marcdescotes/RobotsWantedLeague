@@ -13,14 +13,24 @@ public class NotEmptyRobotsService : IRobotsService
     public NotEmptyRobotsService()
     {
         this.underlyingRobotsService = new RobotsService();
-        this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan");
-        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu");
-        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan");
+        var agentsService = new AgentsService();
+
+        Agent agentMulder = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Mulder");
+        Agent agentScully = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Scully");
+        Agent agentDoggett = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Doggett");
+        Agent agentReyes = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Reyes");
+        Agent agentSkinner = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Skinner");
+        Agent agentSpender = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Spender");
+        Agent agentKersh = agentsService.Agents.FirstOrDefault(agent => agent.Name == "Kersh");
+
+        this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan", agentMulder);
+        this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu", agentScully);
+        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", agentDoggett);
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country)
+    public Robot CreateRobot(string name, int weight, int height, string country, Agent agentAssigné)
     {
-        return underlyingRobotsService.CreateRobot(name, weight, height, country);
+        return underlyingRobotsService.CreateRobot(name, weight, height, country, agentAssigné);
     }
 
     public Robot? GetRobotById(int id)

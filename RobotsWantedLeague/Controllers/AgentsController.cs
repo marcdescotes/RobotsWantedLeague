@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace RobotsWantedLeague.Controllers;
 
@@ -10,19 +11,21 @@ public class AgentRequest
 {
     public string Name { get; set; }
     public string Continent { get; set; }
-
 }
 
 public class AgentsController : Controller
 {
     private readonly ILogger<AgentsController> _logger;
     private readonly IAgentsService agentsService;
+    private readonly IRobotsService robotsService;
 
     public AgentsController(ILogger<AgentsController> logger,
-                            IAgentsService agentsService)
+                            IAgentsService agentsService,
+                            IRobotsService robotsService)
     {
         _logger = logger;
         this.agentsService = agentsService;
+        this.robotsService = robotsService;
     }
 
     public IActionResult Index()
@@ -40,22 +43,32 @@ public class AgentsController : Controller
         return View(agent);
     }
 
-    // [HttpGet]
-    // public IActionResult CreateAgent()
-    // {
-    //     return View();
-    // }
+    [HttpGet]
+    public IActionResult CreateAgent()
+    {
+        return View();
+    }
 
-    // [HttpPost]
-    // public IActionResult CreateAgent([FromBody] AgentRequest agent)
-    // {
+    [HttpPost]
+    public IActionResult CreateAgent([FromBody] AgentRequest agentRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(agentRequest);
+        }
 
-    //     Agent r = agentsService.CreateAgent(agent.Name,
-    //                                         agent.Continent);
-    //     string htmxRedirectHeaderName = "HX-Redirect";
-    //     string redirectURL = "/agents/agent?id=" + r.Id;
-    //     Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
-    //     return Ok();
-    // }
+        string robotName = HttpContext.Request.Form["RobotName"];
 
+        Robot robotAssigné = robotsService.Robots.FirstOrDefault(robot => robot.Name == robotName);
+
+        Agent agent = agentsService.CreateAgent(agentRequest.Name, agentRequest.Continent);
+
+        if (robotAssigné != null)
+        {
+            robotAssigné.AgentAssigné = agent;
+            agent.RobotsAssignés.Add(robotAssigné);
+        }
+
+        return RedirectToAction("Agent", new { id = agent.Id });
+    }
 }

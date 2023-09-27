@@ -9,6 +9,4 @@ public interface IAgentsService
                           string continent);
     public Agent? GetAgentById(int id);
     public bool DeleteAgentById(int id);
-
-
 }

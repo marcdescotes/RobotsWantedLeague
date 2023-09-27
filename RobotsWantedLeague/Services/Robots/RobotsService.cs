@@ -22,9 +22,9 @@ public class RobotsService : IRobotsService
         return idGenerator;
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country)
+    public Robot CreateRobot(string name, int weight, int height, string country, Agent agentAssigné)
     {
-        var robot = new Robot(generateId(), name, weight, height, country);
+        var robot = new Robot(generateId(), name, weight, height, country, agentAssigné);
         robots.Add(robot);
         return robot;
     }
@@ -77,6 +77,26 @@ public class RobotsService : IRobotsService
         {
             robot.VisitedCountries.Add(robot.Country);
             robot.Country = newCountry;
+        }
+    }
+
+    public void ChangeRobotAgent(int robotId, Agent newAgent)
+    {
+        Robot robot = GetRobotById(robotId);
+        if (robot != null)
+        {
+            if (robot.AgentAssigné != null)
+            {
+                robot.AgentAssigné.RobotsAssignés.Remove(robot);
+                robot.AnciensAgentsAssignés.Add(robot.AgentAssigné);
+            }
+
+            robot.AgentAssigné = newAgent;
+
+            if (newAgent != null)
+            {
+                newAgent.RobotsAssignés.Add(robot);
+            }
         }
     }
 }

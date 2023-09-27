@@ -8,7 +8,8 @@ public interface IRobotsService
     public Robot CreateRobot(string name,
                           int weight,
                           int height,
-                          string country);
+                          string country,
+                          Agent agentAssigné);
     public Robot? GetRobotById(int id);
     public bool DeleteRobotById(int id);
     public void ChangeRobotCountry(int robotId, string newCountry);

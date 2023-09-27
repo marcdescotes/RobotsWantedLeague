@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 using System.Text.Json;
 
@@ -25,17 +26,19 @@ public class RobotsController : Controller
 {
     private readonly ILogger<RobotsController> _logger;
     private readonly IRobotsService robotsService;
+    private readonly IAgentsService agentsService;
 
-    public RobotsController(ILogger<RobotsController> logger, IRobotsService robotsService)
+    public RobotsController(ILogger<RobotsController> logger, IRobotsService robotsService, IAgentsService agentsService)
     {
         _logger = logger;
         this.robotsService = robotsService;
+        this.agentsService = agentsService;
     }
 
     public IActionResult Index()
     {
-            return View(robotsService.Robots);
-    
+        return View(robotsService.Robots);
+
     }
     public IActionResult Robot(int id)
     {
@@ -53,27 +56,48 @@ public class RobotsController : Controller
         return View();
     }
 
-    [HttpPost]
+   [HttpPost]
     public IActionResult CreateRobot([FromBody] RobotRequest robot)
     {
-        
         if (!ModelState.IsValid)
         {
             return View(robot);
         }
-        Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country);
-        string htmxRedirectHeaderName = "HX-Redirect";
-        string redirectURL = "/robots/robot?id=" + r.Id;
-        Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
-        return Ok();
+
+        string agentName = HttpContext.Request.Form["AgentName"];
+
+        Agent agentAssigné = agentsService.Agents.FirstOrDefault(agent => agent.Name == agentName);
+
+        if (agentAssigné != null)
+        {
+            Robot r = robotsService.CreateRobot(robot.Name, robot.Weight, robot.Height, robot.Country, agentAssigné);
+
+            if (r.AgentAssigné != null)
+            {
+                r.AgentAssigné.AnciensRobotsAssignés.Add(r);
+            }
+
+            agentAssigné.RobotsAssignés.Add(r);
+
+            string htmxRedirectHeaderName = "HX-Redirect";
+            string redirectURL = "/robots/robot?id=" + r.Id;
+            Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
+
+            return Ok();
+        }
+        else
+        {
+            return BadRequest("Agent non trouvé.");
+        }
     }
+
 
     [HttpPost]
     public IActionResult ChangeRobotCountry(int robotId, string newCountry)
     {
         robotsService.ChangeRobotCountry(robotId, newCountry);
         return RedirectToAction("Robot", new { id = robotId });
-  }
+    }
 
     [HttpGet]
     public IActionResult FilterRobots(string filter)
