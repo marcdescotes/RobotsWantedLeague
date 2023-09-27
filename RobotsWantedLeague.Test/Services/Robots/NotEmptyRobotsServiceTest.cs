@@ -1,4 +1,4 @@
-namespace RobotsWantedLeague.Test.Services;
+namespace RobotsWantedLeague.Test.Services.Robots;
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 
