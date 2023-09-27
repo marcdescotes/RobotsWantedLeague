@@ -73,7 +73,7 @@ public class RobotsController : Controller
         {
             return View(robot);
         }
-        // AUCUN CHANGEMENT SANS CETTE LIGNE : _ = new ChangeRobotCountryViewModel { NewCountry = robot.Country };
+
         bool IsCountryValid = robotsService.IsCountryValid(robot.Country);
         if (!IsCountryValid)
         {
