@@ -124,6 +124,12 @@ public class RobotsService : IRobotsService
         return _validCountries.Contains(char.ToUpper(country[0]) + country.Substring(1));
     }
 
+    public bool IsNullOrWhiteSpace(string value)
+    {
+        return string.IsNullOrWhiteSpace(value);
+    }
+
+
 }
 
 
