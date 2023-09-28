@@ -37,16 +37,37 @@ public class NotEmptyRobotsService : IRobotsService
 
         this.underlyingRobotsService.CreateRobot("Alice", 1050, 2, "Bhutan", "Asia", agentMulder);
         this.underlyingRobotsService.CreateRobot("Bob", 5001, 5, "Vanuatu", "Europe", agentScully);
-        this.underlyingRobotsService.CreateRobot("Xu", 890, 1, "Taiwan", "Antarctica", agentDoggett);
+        this.underlyingRobotsService.CreateRobot(
+            "Xu",
+            890,
+            1,
+            "Taiwan",
+            "Antarctica",
+            agentDoggett
+        );
 
         var validCountriesJson = System.IO.File.ReadAllText("data/ValidCountries.json");
         var validCountries = JsonSerializer.Deserialize<GetValidCountries>(validCountriesJson);
         _validCountries = validCountries?.Countries ?? new List<string>();
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country, string continent, Agent assignedAgent)
+    public Robot CreateRobot(
+        string name,
+        int weight,
+        int height,
+        string country,
+        string continent,
+        Agent assignedAgent
+    )
     {
-        return underlyingRobotsService.CreateRobot(name, weight, height, country, continent, assignedAgent);
+        return underlyingRobotsService.CreateRobot(
+            name,
+            weight,
+            height,
+            country,
+            continent,
+            assignedAgent
+        );
     }
 
     public Robot? GetRobotById(int id)
@@ -74,9 +95,9 @@ public class NotEmptyRobotsService : IRobotsService
     {
         underlyingRobotsService.ChangeRobotContinent(robotId, newContinent);
     }
-    
-    public void ChangeRobotAgent(int robotId, Agent newAgent)
+
+    public void AssignAgentToRobot(Robot robot, Agent newAgent)
     {
-        underlyingRobotsService.ChangeRobotAgent(robotId, newAgent);
+        underlyingRobotsService.AssignAgentToRobot(robot, newAgent);
     }
 }

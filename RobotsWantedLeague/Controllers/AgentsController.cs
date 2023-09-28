@@ -19,9 +19,11 @@ public class AgentsController : Controller
     private readonly IAgentsService agentsService;
     private readonly IRobotsService robotsService;
 
-    public AgentsController(ILogger<AgentsController> logger,
-                            IAgentsService agentsService,
-                            IRobotsService robotsService)
+    public AgentsController(
+        ILogger<AgentsController> logger,
+        IAgentsService agentsService,
+        IRobotsService robotsService
+    )
     {
         _logger = logger;
         this.agentsService = agentsService;
@@ -65,10 +67,27 @@ public class AgentsController : Controller
 
         if (assignedRobot != null)
         {
-            assignedRobot.AssignedAgent = agent;
-            agent.AssignedRobots.Add(assignedRobot);
+            robotsService.AssignAgentToRobot(assignedRobot, agent);
         }
 
         return RedirectToAction("Agent", new { id = agent.Id });
+    }
+
+    public void AssignRobotToAgent(Robot robot, Agent agent)
+    {
+        if (agent != null)
+        {
+            if (robot.AssignedAgent != null)
+            {
+                robot.FormerAssignedAgents.Add(robot.AssignedAgent);
+            }
+
+            robot.AssignedAgent = agent;
+            agent.AssignedRobots.Add(robot);
+        }
+        else
+        {
+            ViewBag.ErrorMessage = "Agent non trouvé.";
+        }
     }
 }

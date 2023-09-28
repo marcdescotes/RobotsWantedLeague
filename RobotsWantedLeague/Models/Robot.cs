@@ -12,8 +12,15 @@ public class Robot
     public Agent AssignedAgent { get; set; }
     public List<Agent> FormerAssignedAgents { get; set; } = new List<Agent>();
 
-
-    public Robot(int Id, string Name, int Weight, int Height, string Country, string Continent, Agent AssignedAgent)
+    public Robot(
+        int Id,
+        string Name,
+        int Weight,
+        int Height,
+        string Country,
+        string Continent,
+        Agent AssignedAgent
+    )
     {
         this.Id = Id;
         this.Name = Name;

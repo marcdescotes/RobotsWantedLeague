@@ -2,6 +2,7 @@ namespace RobotsWantedLeague.Services;
 
 using System.Text.Json;
 using RobotsWantedLeague.Models;
+using System.Linq;
 
 public class RobotsService : IRobotsService
 {
@@ -28,9 +29,24 @@ public class RobotsService : IRobotsService
         return idGenerator;
     }
 
-    public Robot CreateRobot(string name, int weight, int height, string country, string continent, Agent assignedAgent)
+    public Robot CreateRobot(
+        string name,
+        int weight,
+        int height,
+        string country,
+        string continent,
+        Agent assignedAgent
+    )
     {
-        var robot = new Robot(generateId(), name, weight, height, country, continent, assignedAgent);
+        var robot = new Robot(
+            generateId(),
+            name,
+            weight,
+            height,
+            country,
+            continent,
+            assignedAgent
+        );
         robots.Add(robot);
         return robot;
     }
@@ -105,26 +121,6 @@ public class RobotsService : IRobotsService
         }
     }
 
-    public void ChangeRobotAgent(int robotId, Agent newAgent)
-    {
-        Robot robot = GetRobotById(robotId);
-        if (robot != null)
-        {
-            if (robot.AssignedAgent != null)
-            {
-                robot.AssignedAgent.AssignedRobots.Remove(robot);
-                robot.FormerAssignedAgents.Add(robot.AssignedAgent);
-            }
-
-            robot.AssignedAgent = newAgent;
-
-            if (newAgent != null)
-            {
-                newAgent.AssignedRobots.Add(robot);
-            }
-        }
-    }
-
     public void ChangeRobotContinent(int robotId, string newContinent)
     {
         Robot robot = GetRobotById(robotId);
@@ -149,13 +145,22 @@ public class RobotsService : IRobotsService
         return string.IsNullOrWhiteSpace(value);
     }
 
+    public void AssignAgentToRobot(Robot robot, Agent newAgent)
+    {
+        if (robot != null)
+        {
+            if (robot.AssignedAgent != null)
+            {
+                robot.AssignedAgent.AssignedRobots.Remove(robot);
+                robot.FormerAssignedAgents.Add(robot.AssignedAgent);
+            }
+
+            robot.AssignedAgent = newAgent;
+
+            if (newAgent != null)
+            {
+                newAgent.AssignedRobots.Add(robot);
+            }
+        }
+    }
 }
-
-
-
-
-
-
-
-
-

@@ -1,54 +1,52 @@
 @model Agent
 
 @{
+    ViewData["Title"] = "Profil d'un Agent";
     string imageURL = "https://good-hawk-21.deno.dev/toaster" + Model.Id.ToString();
 }
 
 <div class="container">
-    <div class="d-flex justify-content-center">
-        <div class="card mb-3" style="width: 10rem;">
-            <iframe class="card-img-top" src="@imageURL"></iframe>
-        </div>
+    <h1>@Model.Name</h1>
+
+    <div class="card mb-3" style="width: 10rem;">
+        <img class="card-img-top" src="@imageURL" alt="Agent Image">
     </div>
-</div>
 
-<table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
+    <table class="table table-hover" style="width: 40%; margin: 0 auto;">
+        <tbody>
 
-    <thead>
-    <tbody>
+            <tr>
+                <th>Numéro d'Identification</th>
+                <td>@Model.Id</td>
+            </tr>
 
-        <tr>
-            <th>Id</th>
-            <td>@Model.Id</td>
-        </tr>
-        <tr>
-            <th>Nom</th>
-            <td>@Model.Name</td>
-        </tr>
+            <tr>
+                <th>Nom de l'Agent</th>
+                <td>@Model.Name</td>
+            </tr>
 
-        <tr>
-            <th>Continent</th>
-            <td>@Model.Continent</td>
-        </tr>
+            <tr>
+                <th>Rayon d'Action (Continent)</th>
+                <td>@Model.Continent</td>
+            </tr>
 
-        <tr>
-            <th>Robots actuellement assignés</th>
-            <td>
-                <ul>
+            <tr>
+                <th>Robot(s) actuellement assigné(s)</th>
+                <td>
+                    <ul>
                         @foreach (var robot in Model.AssignedRobots)
                         {
-                        <li>@robot.Name</li>
+                            <li>@robot.Name</li>
                         }
-                </ul>
-            </td>
-        </tr>
+                    </ul>
+                </td>
+            </tr>
 
-        <tr>
-            <th>Anciens robots assignés</th>
-            <td>@string.Join(", ", Model.FormerAssignedRobots)</td>
-        </tr>
+            <tr>
+                <th>Robot(s) assigné(s) par le passé</th>
+                <td>@string.Join(", ", Model.FormerAssignedRobots)</td>
+            </tr>
 
-        </thead>
-    </tbody>
-
-</table>
+        </tbody>
+    </table>
+</div>

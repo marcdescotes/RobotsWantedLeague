@@ -1,14 +1,14 @@
 ﻿@{
-  ViewData["Title"] = "Home Page";
+  ViewData["Title"] = "Page d'Accueil";
 }
 @model List<Robot>
 
 <form action="/robots/FilterRobots" method="GET" style="width: 40%; margin-left: auto; margin-right: auto;">
 
   <div class="input-group mb-3">
-    <input type="text" class="form-control" placeholder="Pays ou continent" name="filter" required>
+    <input type="text" class="form-control" placeholder="Pays ou Continent" name="filter" required>
     <div class="input-group-append">
-      <button class="btn btn-primary" type="submit">Button</button>
+      <button class="btn btn-primary" type="submit">Rechercher</button>
     </div>
   </div>
 </form>
@@ -27,11 +27,11 @@
     @if (Model.Count == 0)
     {
       <li class="list-group-item">
-        Aucun robot trouvé
+        Aucun Robot trouvé
       </li>
     }
   </ul>
 </div>
 <div class="text-center">
-  <a class="btn btn-primary mt-2" href="/robots/createRobot">Ajouter un robot</a>
+  <a class="btn btn-primary mt-2" href="/robots/createRobot">Ajouter un Robot</a>
 </div>

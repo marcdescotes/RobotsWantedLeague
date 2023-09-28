@@ -6,7 +6,7 @@ public class Agent
     public string Name { get; set; }
     public string Continent { get; set; }
     public List<Robot> AssignedRobots { get; set; } = new List<Robot>();
-    public List<Robot> FormerAssignedRobots { get; set; } = new List<Robot>();
+    public List<Robot> FormerAssignedRobots { get; set; }
 
     public Agent(int Id, string Name, string Continent)
     {
