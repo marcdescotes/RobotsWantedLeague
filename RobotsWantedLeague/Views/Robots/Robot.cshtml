@@ -70,14 +70,14 @@
             <tr>
                 <th>Agent Assigné</th>
                 <td>
-                        @* @if (Model.AssignedAgent != null)
+                        @if (Model.AssignedAgent != null)
                         {
                         <p>@Model.AssignedAgent.Name</p>
                         }
                         else
                         {
                         <p>Aucun agent assigné</p>
-                        } *@
+                        }
                 </td>
             </tr>
 
@@ -180,7 +180,7 @@
     aria-labelledby="changeRobotCountryModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form method="post" asp-action="AssignAgentToRobot" asp-route-robotId="@Model.Id">
+            <form method="post" asp-action="DispatchAssignRobotToAgent" asp-route-robotId="@Model.Id">
                 <div class="modal-header">
                     <h5 class="modal-title" id="AssignAgentToRobotLabel">Assigner un nouvel Agent</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -190,7 +190,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="newAssignedAgent">Entrez le nouvel Agent Assigné :</label>
-                        <input type="text" class="form-control" name="NewAgentId" id="newAgent"
+                        <input type="text" class="form-control" name="AgentName" id="AgentName"
                             placeholder="Nom de l'Agent Assigné" data-val="true">
                     </div>
                 </div>

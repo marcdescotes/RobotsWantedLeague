@@ -16,6 +16,11 @@
         public string AgentName { get; set; }
     }
 
+    public class AssignAgentToRobotRequest
+    {
+        public string AgentName { get; set; }
+    }
+
     public class SearchRobotRequest
     {
         public string Filter { get; set; }
@@ -171,6 +176,26 @@
         {
             var filteredRobots = robotsService.FilterRobots(filter);
             return View("index", filteredRobots);
+        }
+
+        [HttpPost]
+        public IActionResult DispatchAssignRobotToAgent(string robotId, string agentName)
+        {
+            Robot? robot = robotsService.Robots.FirstOrDefault(
+                robot => robot.Id == Int32.Parse(robotId)
+            );
+
+            Agent? assignedAgent = agentsService.Agents.FirstOrDefault(
+                agent => agent.Name == agentName
+            );
+
+            if (robot != null && assignedAgent != null)
+            {
+                robot.AssignedAgent = assignedAgent;
+            }
+
+
+            return RedirectToAction("Robot", new { id = robotId });
         }
 
         [HttpPost]
