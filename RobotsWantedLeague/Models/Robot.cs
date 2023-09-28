@@ -9,8 +9,18 @@ public class Robot
     public string Country { get; set; }
     public string Continent { get; set; }
     public List<string> VisitedCountries { get; set; } = new List<string>();
+    public Agent AssignedAgent { get; set; }
+    public List<Agent> FormerAssignedAgents { get; set; } = new List<Agent>();
 
-    public Robot(int Id, string Name, int Weight, int Height, string Country, string Continent)
+    public Robot(
+        int Id,
+        string Name,
+        int Weight,
+        int Height,
+        string Country,
+        string Continent,
+        Agent AssignedAgent
+    )
     {
         this.Id = Id;
         this.Name = Name;
@@ -18,5 +28,11 @@ public class Robot
         this.Height = Height;
         this.Country = Country;
         this.Continent = Continent;
+        this.AssignedAgent = AssignedAgent;
+
+        if (AssignedAgent != null)
+        {
+            FormerAssignedAgents.Add(AssignedAgent);
+        }
     }
 }

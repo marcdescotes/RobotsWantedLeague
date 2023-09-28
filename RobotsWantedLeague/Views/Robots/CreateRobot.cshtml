@@ -1,55 +1,41 @@
 <div id="nimportequoi"></div>
-<form hx-post="/robots/createRobot"
-       hx-ext="json-enc"
-       hx-trigger="submit"
-       hx-target="#nimportequoi"
-       style="width: 40%; margin-left: auto; margin-right: auto;">
+<form hx-post="/robots/createRobot" hx-ext="json-enc" hx-trigger="submit" hx-target="#nimportequoi"
+  style="width: 40%; margin-left: auto; margin-right: auto;">
+
   <div class="form-group">
-    <label for="name">Le nom du robot</label>
-    <input type="text" 
-           class="form-control" 
-           id="name" 
-           name="name"
-           placeholder="Le Géant Ferré" required>
-  </div>
-  <div class="form-group">
-    <label for="weight">Poids (kg)</label>
-    <input type="number" 
-           class="form-control" 
-           id="weight"
-           name="weight"
-           min="0"
-           placeholder="87" required>
+    <label for="name">Nom du Robot :</label>
+    <input type="text" class="form-control" id="name" name="name" placeholder="Le Géant Ferré" required>
   </div>
 
   <div class="form-group">
-    <label for="height">Taille (m)</label>
-    <input type="number" 
-           class="form-control" 
-           id="height"
-           name="height"
-           min="0"
-           placeholder="2" required>
+    <label for="weight">Poids (kg) :</label>
+    <input type="number" class="form-control" id="weight" name="weight" min="0" placeholder="87" required>
   </div>
 
   <div class="form-group">
-    <label for="country">Pays</label>
-    <input type="text" 
-           class="form-control" 
-           id="Country" 
-           name="Country"
-           placeholder="Suriname">
+    <label for="height">Taille (m) :</label>
+    <input type="number" class="form-control" id="height" name="height" min="0" placeholder="2" required>
   </div>
 
-  <label for="continent">Continent</label>
+  <div class="form-group">
+    <label for="country">Pays :</label>
+    <input type="text" class="form-control" id="Country" name="Country" placeholder="Canada">
+  </div>
+
+  <div class="form-group">
+    <label for="AgentName">Agent Assigné :</label>
+    <input type="text" class="form-control" id="AgentName" name="AgentName" placeholder="Nom de l'Agent">
+  </div>
+
+  <label for="continent">Continent :</label>
   <select class="form-select" aria-label="Default select example" name="continent" id="continent">
-    <option selected value="North America">North America</option>
-    <option value="South America">South America</option>
+    <option selected value="North America">Amérique du Nord</option>
+    <option value="South America">Amérique du Sud</option>
     <option value="Europe">Europe</option>
-    <option value="Asia">Asia</option>
-    <option value="Africa">Africa</option>
-    <option value="Oceania">Oceania</option>
-    <option value="Antarctica">Antarctica</option>
+    <option value="Asia">Asie</option>
+    <option value="Africa">Afrique</option>
+    <option value="Oceania">Océanie</option>
+    <option value="Antarctica">Antarctique</option>
   </select>
-  <button type="submit" class="btn btn-primary mt-3">Submit</button>
+  <button type="submit" class="btn btn-primary mt-3">Soumettre</button>
 </form>

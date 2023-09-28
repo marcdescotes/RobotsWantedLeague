@@ -1,11 +1,25 @@
 @model Robot;
-
 @{
+    ViewData["Title"] = "Profil d'un Robot";
     string imageURL = "https://robohash.org/toaster" + Model.Id.ToString() + "?set=set2";
+
+
+    static string FormerAgentList(List<Agent> agents)
+    {
+
+        List<string> agentList = new List<string>();
+
+        foreach (Agent agent in agents)
+        {
+            agentList.Add(agent.Name);
+        }
+        return string.Join(", ", agentList);
+    }
+
 }
 
 <div class="container">
-@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
     {
         <div class="alert alert-danger">
             @ViewBag.ErrorMessage
@@ -22,52 +36,102 @@
 <table class="table table-hover" style="width: 40%; margin-left: auto; margin-right: auto;">
 
     <thead>
-    <thead>
-    <tbody>
-        <tr>
-            <th>Nom</th>
-            <td>@Model.Name</td>
-        </tr>
+        <thead>
+        <tbody>
 
-        <tr>
-            <th>Poids</th>
-            <td>@Model.Weight (kg)</td>
-        </tr>
+            <tr>
+                <th>Nom</th>
+                <td>@Model.Name</td>
+            </tr>
 
-        <tr>
-            <th>Taille</th>
-            <td>@Model.Height (m)</td>
-        </tr>
-        <tr>
-            <th>Pays</th>
-            <td>
-                <span>@Model.Country</span>
-                <button class="btn btn-primary ml-3" data-toggle="modal" data-target="#changeRobotCountryModal">
-                    Modifier
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <th>Pays visités</th>
-            <td>@string.Join(", ", Model.VisitedCountries)</td>
-        </tr>
-        <tr>
-            <th>Continent</th>
-            <td>
+            <tr>
+                <th>Poids</th>
+                <td>@Model.Weight (kg)</td>
+            </tr>
 
-                <span>@Model.Continent</span>
-                <button class="btn btn-primary ml-3" data-toggle="modal" data-target="#changeRobotContinentModal">
-                    Modifier
-                </button>
-            </td>
-        </tr>
-        </thead>
+            <tr>
+                <th>Taille</th>
+                <td>@Model.Height (m)</td>
+            </tr>
+
+            <tr>
+                <th>Pays</th>
+                <td>
+                    <span>@Model.Country</span>
+                    <button class="btn btn-primary ml-3" data-toggle="modal" data-target="#changeRobotCountryModal">
+                        Modifier
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Pays visités</th>
+                <td>@string.Join(", ", Model.VisitedCountries)</td>
+
+            </tr>
+
+            <tr>
+                <th>Continent</th>
+                <td>
+
+                    <span>@Model.Continent</span>
+                    <button class="btn btn-primary ml-3" data-toggle="modal" data-target="#changeRobotContinentModal">
+                        Modifier
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Agent Assigné</th>
+                <td>
+                        @if (Model.AssignedAgent != null)
+                        {
+                        <p>@Model.AssignedAgent.Name</p>
+                        }
+                        else
+                        {
+                        <p>Aucun agent assigné</p>
+                        }
+                </td>
+            </tr>
+
+            <tr>
+                <th>Assigner un nouvel Agent</th>
+                <td>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#AssignAgentToRobotModal">
+                        Assigner un nouvel Agent
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <th>Agent(s) Assigné(s) par le passé</th>
+
+                <td>
+
+
+
+                        @if (Model.FormerAssignedAgents != null)
+                        {
+                            @FormerAgentList(Model.FormerAssignedAgents)
+                            ;
+                        }
+                        else
+                        {
+                        <p>Aucun agent assigné</p>
+                        }
+
+                </td>
+            </tr>
+            <tr>
+
+    </thead>
     </tbody>
 
 </table>
 
 
-<!-- Modal Country -->
+<!-- Modal changeRobotCountry -->
 <div class="modal fade" id="changeRobotCountryModal" tabindex="-1" role="dialog"
     aria-labelledby="changeRobotCountryModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -96,7 +160,7 @@
 </div>
 
 
-<!-- Modal Continent -->
+<!-- Modal changeRobotContinent -->
 <div class="modal fade" id="changeRobotContinentModal" tabindex="-1" role="dialog"
     aria-labelledby="changeRobotCountryModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -111,7 +175,8 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="newContinent">Entrez un continent</label>
-                        <select class="form-select" aria-label="Default select example" name="newContinent" id="newContinent">
+                        <select class="form-select" aria-label="Default select example" name="newContinent"
+                            id="newContinent">
                             <option selected value="North America">North America</option>
                             <option value="South America">South America</option>
                             <option value="Europe">Europe</option>
@@ -120,6 +185,35 @@
                             <option value="Oceania">Oceania</option>
                             <option value="Antarctica">Antarctica</option>
                         </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal AssignAgentToRobot -->
+<div class="modal fade" id="AssignAgentToRobotModal" tabindex="-1" role="dialog"
+    aria-labelledby="changeRobotCountryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" asp-action="DispatchAssignRobotToAgent" asp-route-robotId="@Model.Id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="AssignAgentToRobotLabel">Assigner un nouvel Agent</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="newAssignedAgent">Entrez le nouvel Agent Assigné :</label>
+                        <input type="text" class="form-control" name="AgentName" id="AgentName"
+                            placeholder="Nom de l'Agent Assigné" data-val="true">
                     </div>
                 </div>
                 <div class="modal-footer">

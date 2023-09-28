@@ -5,7 +5,10 @@ using RobotsWantedLeague.Models;
 public class NotEmptyAgentsService : IAgentsService
 {
     private readonly IAgentsService underlyingAgentsService;
-    public List<Agent> Agents { get => underlyingAgentsService.Agents; }
+    public List<Agent> Agents
+    {
+        get => underlyingAgentsService.Agents;
+    }
 
     public NotEmptyAgentsService()
     {
@@ -19,8 +22,7 @@ public class NotEmptyAgentsService : IAgentsService
         this.underlyingAgentsService.CreateAgent("Kersh", "Océanie");
     }
 
-    public Agent CreateAgent(string name,
-                          string continent)
+    public Agent CreateAgent(string name, string continent)
     {
         return underlyingAgentsService.CreateAgent(name, continent);
     }
@@ -34,5 +36,4 @@ public class NotEmptyAgentsService : IAgentsService
     {
         return underlyingAgentsService.DeleteAgentById(id);
     }
-
 }
