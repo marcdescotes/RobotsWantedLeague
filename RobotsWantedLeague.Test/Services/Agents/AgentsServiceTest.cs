@@ -11,7 +11,7 @@ public class AgentsServiceTest
     {
         AgentsService service = new AgentsService();
         Agent agent = service.CreateAgent("paul", "Europe");
-        
+
         Assert.AreEqual(agent.Name, "paul");
         Assert.AreEqual(agent.Continent, "Europe");
     }
@@ -24,7 +24,7 @@ public class AgentsServiceTest
         Assert.IsNull(service.GetAgentById(98));
         Agent agent = service.CreateAgent("paul", "Nord America");
         Agent? ret = service.GetAgentById(agent.Id);
-        
+
         Assert.IsNotNull(ret);
         Assert.AreEqual(agent.Name, ret.Name);
     }
@@ -62,5 +62,36 @@ public class AgentsServiceTest
         Assert.IsTrue(service.DeleteAgentById(agent.Id));
         Assert.AreEqual(1, service.Agents.Count);
         Assert.IsNull(service.GetAgentById(agent.Id));
+    }
+
+    [TestMethod]
+    public void TestAssignRobotToAgent()
+    {
+        AgentsService serviceAgent = new AgentsService();
+        IRobotsService serviceRobot = new NotEmptyRobotsService();
+        Agent agent = serviceAgent.CreateAgent("Agent1", "Europe");
+        Robot robot = serviceRobot.CreateRobot("Robot1", 100, 200, "France", "Europe", null);
+
+        Assert.AreEqual(agent.AssignedRobots.Count, 0);
+
+        serviceAgent.AssignRobotToAgent(robot, agent);
+
+        Assert.AreEqual(agent.AssignedRobots.Count, 1);
+        Assert.IsTrue(agent.AssignedRobots.Contains(robot));
+
+        Assert.AreEqual(robot.AssignedAgent, agent);
+    }
+
+    [TestMethod]
+    public void TestAssignRobotToAgent_NullAgent()
+    {
+        AgentsService serviceAgent = new AgentsService();
+        IRobotsService serviceRobot = new NotEmptyRobotsService();
+
+        Robot robot = serviceRobot.CreateRobot("Robot2", 150, 250, "Spain", "Europe", null);
+
+        Assert.ThrowsException<InvalidOperationException>(
+            () => serviceAgent.AssignRobotToAgent(robot, null)
+        );
     }
 }
