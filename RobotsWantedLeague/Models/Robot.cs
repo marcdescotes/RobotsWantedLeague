@@ -29,10 +29,5 @@ public class Robot
         this.Country = Country;
         this.Continent = Continent;
         this.AssignedAgent = AssignedAgent;
-
-        if (AssignedAgent != null)
-        {
-            FormerAssignedAgents.Add(AssignedAgent);
-        }
     }
 }

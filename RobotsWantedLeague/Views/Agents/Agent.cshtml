@@ -60,7 +60,7 @@
             <td>@Model.Continent</td>
 
         </tr>
-        <tr>
+        @* <tr>
             <th>Robot(s) actuellement assigné(s)</th>
             <td>
                 <ul>
@@ -70,8 +70,8 @@
                         }
                 </ul>
             </td>
-        </tr>
-        <tr>
+        </tr> *@
+        @* <tr>
             <th>Robot(s) assigné(s) par le passé</th>
             <td>@{
                         if (Model.FormerAssignedRobots != null)
@@ -79,7 +79,7 @@
                             string.Join(", ", Model.FormerAssignedRobots);
                         };
                     }</td>
-        </tr>
+        </tr> *@
 
         </thead>
 

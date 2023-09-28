@@ -10,8 +10,12 @@ public class NotEmptyRobotsServiceTest
     public void TestHappyPath()
     {
         IRobotsService service = new NotEmptyRobotsService();
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        
         Assert.AreEqual(3, service.Robots.Count);
-        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
+        Agent agent = serviceAgent.CreateAgent("paul", "Europe");
+        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
         Assert.AreEqual(robot.Name, "paul");
         Assert.AreEqual(robot.Weight, 2);
 
