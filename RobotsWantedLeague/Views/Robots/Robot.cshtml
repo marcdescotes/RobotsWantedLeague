@@ -70,14 +70,14 @@
             <tr>
                 <th>Agent Assigné</th>
                 <td>
-                        @if (Model.AssignedAgent != null)
+                        @* @if (Model.AssignedAgent != null)
                         {
                         <p>@Model.AssignedAgent.Name</p>
                         }
                         else
                         {
                         <p>Aucun agent assigné</p>
-                        }
+                        } *@
                 </td>
             </tr>
 
@@ -92,7 +92,14 @@
 
             <tr>
                 <th>Agent(s) Assigné(s) par le passé</th>
-                <td>@string.Join(", ", Model.FormerAssignedAgents)</td>
+
+                <td>
+                        @if (Model.FormerAssignedAgents != null)
+                        {
+                            @string.Join(", ", Model.FormerAssignedAgents)
+                            ;
+                        };
+                </td>
             </tr>
             <tr>
 
