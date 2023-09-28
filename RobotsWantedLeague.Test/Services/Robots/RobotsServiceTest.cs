@@ -1,27 +1,33 @@
 namespace RobotsWantedLeague.Test.Services.Robots;
+
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 
 [TestClass]
 public class RobotsServiceTest
 {
-
     [TestMethod]
     public void TestCreateRobot()
     {
         RobotsService service = new RobotsService();
-        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent = serviceAgent.CreateAgent("paul", "Nord America");
+
+        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
         Assert.AreEqual(robot.Name, "paul");
         Assert.AreEqual(robot.Weight, 2);
     }
-
 
     [TestMethod]
     public void TestGetRobotById()
     {
         RobotsService service = new RobotsService();
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent = serviceAgent.CreateAgent("paul", "Nord America");
         Assert.IsNull(service.GetRobotById(98));
-        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
+        Robot robot = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
         Robot? ret = service.GetRobotById(robot.Id);
         Assert.IsNotNull(ret);
         Assert.AreEqual(robot.Name, ret.Name);
@@ -31,8 +37,11 @@ public class RobotsServiceTest
     public void TestGetRobotById_MultipleRobots()
     {
         RobotsService service = new RobotsService();
-        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
-        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe");
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent = serviceAgent.CreateAgent("paul", "Nord America");
+        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
+        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe", agent);
         Robot? ret = service.GetRobotById(robot2.Id);
         Assert.IsNotNull(ret);
         Assert.AreEqual(robot2.Name, ret.Name);
@@ -42,8 +51,11 @@ public class RobotsServiceTest
     public void TestListRobots()
     {
         RobotsService service = new RobotsService();
-        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
-        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe");
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent = serviceAgent.CreateAgent("paul", "Nord America");
+        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
+        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe", agent);
         Assert.AreEqual(2, service.Robots.Count);
     }
 
@@ -51,9 +63,12 @@ public class RobotsServiceTest
     public void TestDeleteRobotById()
     {
         RobotsService service = new RobotsService();
-        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
-        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe");
-        Robot robot3 = service.CreateRobot("xu", 1, 9, "chine", "Asia");
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent = serviceAgent.CreateAgent("paul", "Nord America");
+        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
+        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe", agent);
+        Robot robot3 = service.CreateRobot("xu", 1, 9, "chine", "Asia", agent);
 
         Assert.IsTrue(service.DeleteRobotById(robot2.Id));
 
@@ -75,10 +90,13 @@ public class RobotsServiceTest
     public void FilterRobots()
     {
         RobotsService service = new RobotsService();
-        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America");
-        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe");
-        Robot robot3 = service.CreateRobot("xu", 1, 9, "chine", "asia");
-        Robot robot4 = service.CreateRobot("test", 1, 9, "chine", "asia");
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent = serviceAgent.CreateAgent("paul", "Nord America");
+        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America", agent);
+        Robot robot2 = service.CreateRobot("emanuel", 20, 30, "france", "Europe", agent);
+        Robot robot3 = service.CreateRobot("xu", 1, 9, "chine", "asia", agent);
+        Robot robot4 = service.CreateRobot("test", 1, 9, "chine", "asia", agent);
 
         Assert.AreEqual(1, service.FilterRobots("canada").Count);
         Assert.AreEqual(2, service.FilterRobots("chine").Count);
@@ -86,5 +104,4 @@ public class RobotsServiceTest
         Assert.AreEqual(0, service.FilterRobots("jhgsg").Count);
         Assert.AreEqual(0, service.FilterRobots("").Count);
     }
-
 }
