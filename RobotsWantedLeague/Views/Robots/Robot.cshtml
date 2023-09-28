@@ -1,8 +1,21 @@
 @model Robot;
-
 @{
     ViewData["Title"] = "Profil d'un Robot";
     string imageURL = "https://robohash.org/toaster" + Model.Id.ToString() + "?set=set2";
+
+
+    static string FormerAgentList(List<Agent> agents)
+    {
+
+        List<string> agentList = new List<string>();
+
+        foreach (Agent agent in agents)
+        {
+            agentList.Add(agent.Name);
+        }
+        return string.Join(", ", agentList);
+    }
+
 }
 
 <div class="container">
@@ -54,6 +67,7 @@
             <tr>
                 <th>Pays visités</th>
                 <td>@string.Join(", ", Model.VisitedCountries)</td>
+
             </tr>
 
             <tr>
@@ -94,11 +108,19 @@
                 <th>Agent(s) Assigné(s) par le passé</th>
 
                 <td>
+
+
+
                         @if (Model.FormerAssignedAgents != null)
                         {
-                            @string.Join(", ", Model.FormerAssignedAgents)
+                            @FormerAgentList(Model.FormerAssignedAgents)
                             ;
-                        };
+                        }
+                        else
+                        {
+                        <p>Aucun agent assigné</p>
+                        }
+
                 </td>
             </tr>
             <tr>

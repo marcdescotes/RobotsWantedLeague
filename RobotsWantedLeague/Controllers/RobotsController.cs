@@ -189,14 +189,40 @@
                 agent => agent.Name == agentName
             );
 
-            if (robot != null && assignedAgent != null)
+            if (string.IsNullOrWhiteSpace(agentName))
             {
-                robot.AssignedAgent = assignedAgent;
+                ViewBag.ErrorMessage = "Veuillez entrer un agent";
+                return View("Robot", robotsService.GetRobotById(Int32.Parse(robotId)));
             }
 
+             if (assignedAgent == null)
+            {
+                ViewBag.ErrorMessage = "L'agent n'est pas valide";
+                return View("Robot", robotsService.GetRobotById(Int32.Parse(robotId)));
+            }
 
-            return RedirectToAction("Robot", new { id = robotId });
+            if (robot != null && assignedAgent != null)
+            {
+                if (robot.AssignedAgent != null)
+                {
+                    var formerAssignedAgent = robot.AssignedAgent;
+                    robot.FormerAssignedAgents.Add(formerAssignedAgent);
+                    robot.AssignedAgent = assignedAgent;
+                }
+                else
+                {
+                    robot.AssignedAgent = assignedAgent;
+                }
+
+                return RedirectToAction("Robot", new { id = robotId });
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Veuillez inscrire un pays.";
+                return View("Robot", new { id = robotId });
+            }
         }
+
 
         [HttpPost]
         public IActionResult ChangeRobotContinent(int robotId, string newContinent)
