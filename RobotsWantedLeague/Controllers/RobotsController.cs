@@ -105,7 +105,7 @@
                     assignedAgent
                 );
 
-                robotsService.AssignAgentToRobot(r, assignedAgent);
+                // robotsService.AssignAgentToRobot(r, assignedAgent);
 
                 return RedirectToAction("Robot", new { id = r.Id });
             }
@@ -116,29 +116,6 @@
             }
         }
 
-        public IActionResult AssignAgentToRobot(Robot robot, Agent newAgent)
-        {
-            if (robot != null)
-            {
-                if (robot.AssignedAgent != null)
-                {
-                    robot.FormerAssignedAgents.Add(robot.AssignedAgent);
-                }
-
-                robot.AssignedAgent = newAgent;
-
-                if (newAgent != null)
-                {
-                    newAgent.AssignedRobots.Add(robot);
-                }
-                return RedirectToAction("Robots");
-            }
-            else
-            {
-                ViewBag.ErrorMessage = "Agent non trouvé.";
-                return View("_RobotErrorMessages");
-            }
-        }
 
         [HttpPost]
         public IActionResult ChangeRobotCountry(int robotId, string newCountry)
@@ -178,6 +155,23 @@
             return View("index", filteredRobots);
         }
 
+
+
+        public void AssignRobotToAgent(Robot robot, Agent agent)
+        {
+            if (robot.AssignedAgent != null)
+            {
+                var formerAssignedAgent = robot.AssignedAgent;
+                robot.FormerAssignedAgents.Add(formerAssignedAgent);
+                robot.AssignedAgent = agent;
+            }
+            else
+            {
+                robot.AssignedAgent = agent;
+            }
+        }
+
+
         [HttpPost]
         public IActionResult DispatchAssignRobotToAgent(string robotId, string agentName)
         {
@@ -195,7 +189,7 @@
                 return View("Robot", robotsService.GetRobotById(Int32.Parse(robotId)));
             }
 
-             if (assignedAgent == null)
+            if (assignedAgent == null)
             {
                 ViewBag.ErrorMessage = "L'agent n'est pas valide";
                 return View("Robot", robotsService.GetRobotById(Int32.Parse(robotId)));
@@ -203,16 +197,7 @@
 
             if (robot != null && assignedAgent != null)
             {
-                if (robot.AssignedAgent != null)
-                {
-                    var formerAssignedAgent = robot.AssignedAgent;
-                    robot.FormerAssignedAgents.Add(formerAssignedAgent);
-                    robot.AssignedAgent = assignedAgent;
-                }
-                else
-                {
-                    robot.AssignedAgent = assignedAgent;
-                }
+                AssignRobotToAgent(robot, assignedAgent);
 
                 return RedirectToAction("Robot", new { id = robotId });
             }
@@ -222,7 +207,6 @@
                 return View("Robot", new { id = robotId });
             }
         }
-
 
         [HttpPost]
         public IActionResult ChangeRobotContinent(int robotId, string newContinent)
