@@ -107,7 +107,10 @@
 
                 // robotsService.AssignAgentToRobot(r, assignedAgent);
 
-                return RedirectToAction("Robot", new { id = r.Id });
+                string htmxRedirectHeaderName = "HX-Redirect";
+                string redirectURL = "/robots/robot?id=" + r.Id;
+                Response.Headers.Add(htmxRedirectHeaderName, redirectURL);
+                return Ok();
             }
             else
             {
@@ -115,7 +118,6 @@
                 return View("_RobotErrorMessages");
             }
         }
-
 
         [HttpPost]
         public IActionResult ChangeRobotCountry(int robotId, string newCountry)
@@ -155,8 +157,6 @@
             return View("index", filteredRobots);
         }
 
-
-
         public void AssignRobotToAgent(Robot robot, Agent agent)
         {
             if (robot.AssignedAgent != null)
@@ -170,7 +170,6 @@
                 robot.AssignedAgent = agent;
             }
         }
-
 
         [HttpPost]
         public IActionResult DispatchAssignRobotToAgent(string robotId, string agentName)

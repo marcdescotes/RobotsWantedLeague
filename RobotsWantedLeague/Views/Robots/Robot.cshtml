@@ -111,14 +111,14 @@
 
 
 
-                        @if (Model.FormerAssignedAgents != null)
+                        @if (Model.FormerAssignedAgents.Count != 0)
                         {
                             @FormerAgentList(Model.FormerAssignedAgents)
                             ;
                         }
                         else
                         {
-                        <p>Aucun agent assigné</p>
+                        <p>Aucun ancien agent</p>
                         }
 
                 </td>
