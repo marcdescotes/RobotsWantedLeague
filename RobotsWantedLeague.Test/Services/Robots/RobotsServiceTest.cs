@@ -104,4 +104,22 @@ public class RobotsServiceTest
         Assert.AreEqual(0, service.FilterRobots("jhgsg").Count);
         Assert.AreEqual(0, service.FilterRobots("").Count);
     }
+
+    [TestMethod]
+    public void TestAssignAgentToRobot()
+    {
+        RobotsService service = new RobotsService();
+        IAgentsService serviceAgent = new NotEmptyAgentsService();
+
+        Agent agent1 = serviceAgent.CreateAgent("paul", "Nord America");
+        Robot robot1 = service.CreateRobot("paul", 2, 3, "canada", "Nord America", null);
+
+        Assert.IsNull(robot1.AssignedAgent);
+
+        service.AssignAgentToRobot(robot1, agent1);
+
+        Assert.AreEqual(robot1.AssignedAgent, agent1);
+
+        Assert.IsTrue(agent1.AssignedRobots.Contains(robot1));
+    }
 }
