@@ -1,11 +1,11 @@
 namespace RobotsWantedLeague.Test.Services.Agents;
+
 using RobotsWantedLeague.Models;
 using RobotsWantedLeague.Services;
 
 [TestClass]
 public class NotEmptyAgentsServiceTest
 {
-
     [TestMethod]
     public void TestHappyPath()
     {
@@ -20,5 +20,22 @@ public class NotEmptyAgentsServiceTest
         Assert.AreEqual(7, service.Agents.Count);
     }
 
+    [TestMethod]
+    public void TestAssignRobotToAgent()
+    {
+        AgentsService service = new AgentsService();
+        IRobotsService serviceRobot = new NotEmptyRobotsService();
 
+        Agent agent = service.CreateAgent("Agent1", "Europe");
+        Robot robot = serviceRobot.CreateRobot("Robot1", 100, 200, "France", "Europe", null);
+
+        Assert.AreEqual(agent.AssignedRobots.Count, 0);
+
+        service.AssignRobotToAgent(robot, agent);
+
+        Assert.AreEqual(agent.AssignedRobots.Count, 1);
+        Assert.IsTrue(agent.AssignedRobots.Contains(robot));
+
+        Assert.AreEqual(robot.AssignedAgent, agent);
+    }
 }
